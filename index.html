@@ -35,13 +35,16 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 6. รองรับการตั้งค่าลดการเคลื่อนไหว (Reduced Motion) */
+        /* รองรับการตั้งค่าลดการเคลื่อนไหว (Reduced Motion) */
         @media (prefers-reduced-motion: reduce) {
             *, ::before, ::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
+            }
+            .sparkle-layer, .celebration-layer, .shimmer-border-ring, .pearl-sweep-layer {
+                display: none !important;
             }
         }
 
@@ -50,31 +53,37 @@
             background: radial-gradient(circle at top right, #ffe0eb 0%, #fff6f9 45%, #ffffff 100%);
             color: var(--text-dark);
             min-height: 100vh;
-            padding-bottom: 50px;
+            min-height: 100dvh;
+            padding: 20px 0;
             line-height: 1.4;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         button, input, select {
             font-family: inherit;
         }
 
-        /* ปรับลดระยะห่างระหว่างการ์ดให้กะทัดรัดขึ้น */
         .main-container {
+            width: 100%;
             max-width: 1120px;
-            margin: 16px auto 0;
+            margin: 0 auto;
             padding: 0 16px;
         }
 
         .views-grid {
             display: grid;
             grid-template-columns: 1fr;
-            max-width: 460px;
+            width: 100%;
+            max-width: 450px;
             margin: 0 auto;
             gap: 16px;
         }
 
         .views-grid.split-mode {
-            max-width: 980px;
+            max-width: 960px;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             align-items: start;
         }
@@ -101,61 +110,60 @@
             border-color: #ebd07a;
         }
 
-        /* Phone Frame Card */
+        /* กรอบเว็บ (Phone Shell) ล็อกขนาดสัดส่วนบน iPad ตามที่วงสีน้ำเงินไว้ (450px x 820px) */
         .phone-shell {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 248, 251, 0.97) 100%);
+            background: rgba(255, 255, 255, 0.96);
             border-radius: 30px;
             padding: 16px;
-            box-shadow: var(--shadow-luxury), 0 0 0 4px rgba(255, 255, 255, 0.75), inset 0 1px 2px rgba(255, 255, 255, 0.9);
-            border: 1.5px solid rgba(255, 170, 198, 0.75);
+            box-shadow: var(--shadow-luxury);
+            border: 1.5px solid rgba(255, 182, 205, 0.75);
             position: relative;
-            overflow: hidden;
-            transition: box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 450px;
+            min-height: 800px;
+            max-height: 850px;
+            margin: 0 auto;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
 
-        .phone-shell::before {
-            content: '✦';
-            position: absolute;
-            top: 82px;
-            right: 22px;
-            font-size: 14px;
-            color: var(--gold-400);
-            opacity: 0.55;
-            pointer-events: none;
-            animation: twinkleStar 3s ease-in-out infinite;
-            z-index: 1;
-        }
-
-        .phone-shell::after {
-            content: '✿';
-            position: absolute;
-            bottom: 36px;
-            left: 18px;
-            font-size: 14px;
-            color: var(--pink-300);
-            opacity: 0.45;
-            pointer-events: none;
-            animation: twinkleStar 4s ease-in-out infinite reverse;
-            z-index: 1;
-        }
-
-        @keyframes twinkleStar {
-            0%, 100% { transform: scale(0.85) rotate(0deg); opacity: 0.35; }
-            50% { transform: scale(1.2) rotate(18deg); opacity: 0.85; }
-        }
-
-        @keyframes cutePngFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-3px) rotate(1.5deg); }
-        }
-
-        @keyframes sparkleBadge {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.25); }
+        .phone-shell::-webkit-scrollbar {
+            display: none;
         }
 
         .phone-shell.admin-shell {
             border-color: rgba(212, 175, 55, 0.45);
+        }
+
+        /* เวลาเปิดในมือถือให้ขยายเต็มจอมือถืออัตโนมัติ */
+        @media (max-width: 540px) {
+            body {
+                padding: 0;
+                justify-content: flex-start;
+                background: #ffffff;
+            }
+            .main-container {
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            .views-grid {
+                max-width: 100%;
+                gap: 0;
+            }
+            .phone-shell {
+                max-width: 100%;
+                min-height: 100vh;
+                min-height: 100dvh;
+                max-height: none;
+                border-radius: 0;
+                border: none;
+                padding: 14px 14px 36px;
+                box-shadow: none;
+                overflow-y: visible;
+            }
         }
 
         .section-stack {
@@ -246,49 +254,32 @@
         .icon-btn {
             width: 38px;
             height: 38px;
-            border-radius: 13px;
-            border: 1.5px solid var(--pink-200);
-            background: linear-gradient(135deg, #ffffff 0%, var(--pink-50) 100%);
+            border-radius: 12px;
+            border: 1px solid var(--pink-200);
+            background: var(--pink-50);
             color: var(--pink-600);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(244, 54, 118, 0.12), inset 0 1px 0 #ffffff;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.2s;
         }
 
         .icon-btn:hover {
-            background: linear-gradient(135deg, var(--pink-50) 0%, var(--pink-100) 100%);
-            border-color: var(--pink-300);
-            transform: translateY(-2px) rotate(12deg);
-            box-shadow: 0 6px 14px rgba(244, 54, 118, 0.2);
+            background: var(--pink-100);
         }
 
-        .icon-btn:active {
-            transform: scale(0.92);
-        }
-
-        /* 2. Banner Slider */
+        /* 2. Banner Box (ขนาดเท่าเดิม 170px) */
         .banner-box {
             position: relative;
             width: 100%;
             height: 170px;
-            border-radius: 22px;
+            border-radius: 20px;
             overflow: hidden;
             background: var(--pink-100);
-            border: 2px solid #ffffff;
-            outline: 1px solid var(--pink-200);
-            box-shadow: var(--shadow-card), 0 8px 20px -6px rgba(244, 54, 118, 0.18);
-        }
-
-        .banner-box::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
-            pointer-events: none;
+            border: 1px solid var(--pink-200);
+            box-shadow: var(--shadow-card);
+            flex-shrink: 0;
         }
 
         .banner-box img {
@@ -296,56 +287,62 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .banner-box:hover img {
-            transform: scale(1.03);
         }
 
         .banner-overlay {
-            position: absolute;
-            inset: auto 0 0 0;
-            height: 54px;
-            background: linear-gradient(to top, rgba(35, 12, 22, 0.72), transparent);
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            padding: 10px 14px;
+            display: none !important;
         }
 
         .banner-caption {
-            color: #fff;
-            font-size: 11px;
-            font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            display: none !important;
         }
 
-        /* 3. Total Queue Card */
+        /* 3. Total Queue Card & Compact Active Service Card (วางคู่กันขนาดเท่ากัน) */
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: stretch;
+            gap: 10px;
+        }
+
         .summary-card {
-            background: linear-gradient(135deg, #fff5f8 0%, #ffffff 50%, var(--gold-light) 100%);
-            border-radius: 22px;
-            padding: 12px 14px;
-            border: 1.5px solid rgba(255, 192, 213, 0.85);
-            box-shadow: var(--shadow-card), inset 0 1px 0 #ffffff;
+            background: linear-gradient(135deg, var(--pink-50) 0%, #ffffff 55%, var(--gold-light) 100%);
+            border-radius: 20px;
+            padding: 10px 12px;
+            border: 1px solid var(--pink-200);
+            box-shadow: var(--shadow-card);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            justify-content: flex-start;
+            gap: 8px;
+            width: 100%;
+            min-width: 0;
             position: relative;
             overflow: hidden;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .summary-card:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 22px -4px rgba(244, 54, 118, 0.14), inset 0 1px 0 #ffffff;
+        .summary-card.active-service-mini {
+            background: linear-gradient(135deg, #ffffff 0%, var(--pink-50) 70%, var(--gold-light) 100%);
+            border-color: var(--pink-300);
+            cursor: pointer;
+            transition: transform 0.17s ease, box-shadow 0.25s ease;
+        }
+
+        .summary-card.active-service-mini:active {
+            transform: scale(0.98);
+        }
+
+        .summary-empty-space {
+            flex: 1;
+            min-height: 1px;
         }
 
         .summary-left {
             display: flex;
             align-items: center;
-            gap: 11px;
+            gap: 8px;
+            width: 100%;
+            min-width: 0;
         }
 
         .summary-icon {
@@ -358,6 +355,104 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 5px 12px rgba(244, 54, 118, 0.22);
+            flex-shrink: 0;
+        }
+
+        /* ป้ายคิวในการ์ดกำลังให้บริการ: ไร้กรอบ รูป PNG ใหญ่ชัด เลขคิวเล็กด้านล่าง */
+        .active-mini-badge {
+            width: 54px;
+            height: 54px;
+            border-radius: 0;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            gap: 1px;
+            flex-shrink: 0;
+            line-height: 1;
+            position: relative;
+            overflow: visible;
+        }
+
+        .active-mini-badge .queue-mini-icon {
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
+            max-width: 40px !important;
+            min-height: 40px !important;
+            max-height: 40px !important;
+            object-fit: contain !important;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .active-mini-badge strong {
+            font-size: 8.5px;
+            font-weight: 700;
+            color: var(--pink-700);
+            white-space: nowrap;
+            line-height: 1.05;
+        }
+
+        .active-mini-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .active-mini-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px;
+        }
+
+        .active-mini-title {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .active-mini-pct {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--pink-600);
+            flex-shrink: 0;
+        }
+
+        .active-mini-status-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 2px 0 4px 0;
+        }
+
+        .active-mini-status {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.15;
+        }
+
+        .active-mini-work-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            object-fit: cover;
+            border: 1px solid var(--pink-300);
             flex-shrink: 0;
         }
 
@@ -387,69 +482,38 @@
             color: var(--pink-600);
         }
 
-        .summary-right {
-            text-align: right;
-        }
-
         .btn-refresh {
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            padding: 6px 13px;
+            padding: 5px 12px;
             border-radius: 999px;
-            background: linear-gradient(180deg, #ffffff 0%, var(--pink-50) 100%);
+            background: #fff;
             color: var(--pink-600);
-            border: 1.5px solid var(--pink-200);
+            border: 1px solid var(--pink-200);
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 3px 8px rgba(244, 54, 118, 0.12), inset 0 1px 0 #ffffff;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-refresh:hover {
-            background: linear-gradient(180deg, var(--pink-50) 0%, var(--pink-100) 100%);
-            border-color: var(--pink-300);
-            transform: translateY(-1.5px);
-            box-shadow: 0 5px 12px rgba(244, 54, 118, 0.18), inset 0 1px 0 #ffffff;
+            box-shadow: 0 2px 6px rgba(244, 54, 118, 0.08);
+            transition: transform 0.15s;
         }
 
         .btn-refresh:active {
-            transform: scale(0.94);
+            transform: scale(0.95);
         }
 
-        .btn-refresh span {
-            display: inline-block;
-            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .btn-refresh:hover span {
-            transform: rotate(180deg);
-        }
-
-        .updated-text {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 3px;
-        }
-
-        /* 4. Active Queue Progress Card & Soft Glow Active Card */
+        /* 4. Content Card */
         .content-card {
-            background: linear-gradient(180deg, #ffffff 0%, #fffcfd 100%);
+            background: #ffffff;
             border-radius: 22px;
             padding: 14px;
-            border: 1.5px solid var(--pink-200);
-            box-shadow: var(--shadow-card), inset 0 1px 0 #ffffff;
+            border: 1px solid var(--pink-200);
+            box-shadow: var(--shadow-card);
             position: relative;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        /* 1. Soft Glow Active Card: แสงเรืองรองสีชมพูอ่อนให้การ์ดคิวที่กำลังดำเนินการโดยไม่ทำให้การ์ดใหญ่ขึ้น */
-        .content-card.soft-glow-active,
-        .queue-row.active-row.soft-glow-active {
-            box-shadow: var(--shadow-card), 0 0 18px rgba(255, 140, 180, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+        .content-card.soft-glow-active {
+            box-shadow: var(--shadow-card), 0 0 16px rgba(255, 154, 187, 0.45);
             border-color: var(--pink-400);
         }
 
@@ -498,7 +562,6 @@
             gap: 5px;
         }
 
-        /* 2. Pulse Status Dot: จุดสถานะเต้นเบา ๆ ข้างข้อความ */
         .pulse-dot {
             width: 7px;
             height: 7px;
@@ -519,30 +582,25 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: linear-gradient(135deg, #fff5f8 0%, #ffffff 55%, #fff0f6 100%);
+            background: var(--pink-50);
             border: 1px solid var(--pink-200);
             border-radius: 16px;
             padding: 10px 12px;
             margin-bottom: 12px;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 12px rgba(244, 54, 118, 0.06);
+            position: relative;
         }
 
         .queue-number-badge {
             background: linear-gradient(135deg, var(--pink-500), var(--pink-700));
             color: #fff;
             border-radius: 14px;
-            padding: 6px 8px 4px;
-            width: 88px;
-            height: 68px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
+            padding: 8px 12px;
+            min-width: 82px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(244, 54, 118, 0.28);
             flex-shrink: 0;
             position: relative;
-            overflow: visible;
+            overflow: hidden;
         }
 
         .queue-number-badge.admin-badge {
@@ -550,69 +608,45 @@
         }
 
         .queue-number-badge.has-frame {
-            background-color: transparent !important;
+            background: transparent !important;
             box-shadow: none !important;
             border: none !important;
             background-size: contain !important;
             background-repeat: no-repeat !important;
-            background-position: center top !important;
+            background-position: center !important;
             color: var(--pink-700);
-            padding: 4px 4px 2px;
-            filter: drop-shadow(0 5px 10px rgba(244, 54, 118, 0.26));
-            animation: cutePngFloat 3.2s ease-in-out infinite;
+            text-shadow: 0 1px 4px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.9);
+            padding: 12px 10px;
         }
 
-        .queue-number-badge.has-frame::before {
-            content: '✦';
-            position: absolute;
-            top: 0px;
-            right: 2px;
-            font-size: 11px;
-            color: var(--gold-500);
-            text-shadow: 0 0 4px #fff;
-            animation: sparkleBadge 2s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        .queue-number-badge.has-frame::after {
-            content: '✿';
-            position: absolute;
-            top: 4px;
-            left: 2px;
-            font-size: 9px;
-            color: var(--pink-400);
-            text-shadow: 0 0 4px #fff;
-            animation: sparkleBadge 2.6s ease-in-out infinite reverse;
-            pointer-events: none;
+        .queue-number-badge.has-frame small {
+            color: var(--pink-700) !important;
+            font-weight: 600;
         }
 
         .queue-number-badge small {
-            display: none !important;
+            display: block;
+            font-size: 9px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
         }
 
         .queue-number-badge strong {
-            font-size: 12px;
+            font-size: 19px;
             font-weight: 700;
-            letter-spacing: 0.4px;
-            line-height: 1.1;
+            letter-spacing: 0.5px;
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.92);
-            color: var(--pink-700);
-            padding: 1.5px 8px;
-            border-radius: 999px;
-            border: 1px solid var(--pink-200);
-            box-shadow: 0 2px 6px rgba(244, 54, 118, 0.18);
-            margin-bottom: 1px;
         }
 
-        /* รูปอัปเดตความคืบหน้าของงาน (กะทัดรัด ไม่ดันการ์ด) */
+        /* รูปอัปเดตความคืบหน้าของงาน (รูปย่อขนาดเล็ก 68x68px) */
         .work-progress-box {
             margin: 0 0 12px 0;
             background: var(--pink-50);
             border: 1px dashed var(--pink-300);
             border-radius: 16px;
-            padding: 8px 10px;
+            padding: 8px 12px;
         }
 
         .work-progress-header {
@@ -623,22 +657,37 @@
             font-weight: 600;
             color: var(--pink-700);
             margin-bottom: 6px;
+            gap: 6px;
+        }
+
+        .work-progress-thumb-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .work-progress-img {
-            width: 100%;
-            max-height: 150px;
+            width: 68px;
+            height: 68px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid var(--pink-200);
+            border-radius: 12px;
+            border: 1.5px solid var(--pink-200);
             display: block;
             background: #fff;
             cursor: pointer;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(244, 54, 118, 0.12);
             transition: transform 0.2s;
         }
 
         .work-progress-img:hover {
-            transform: scale(1.01);
+            transform: scale(1.04);
+        }
+
+        .work-progress-thumb-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.35;
         }
 
         .progress-info {
@@ -675,22 +724,34 @@
             height: 100%;
             border-radius: 999px;
             background: linear-gradient(90deg, var(--pink-400), var(--pink-600), var(--gold-500));
-            transition: width 0.35s ease;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
             position: relative;
+            overflow: hidden;
         }
 
-        /* 6. Progress Shimmer: เพิ่มแสงวิ่งผ่านแถบความคืบหน้าแบบเบา ๆ */
-        .progress-fill::after {
+        .progress-fill::after,
+        .mini-bar-fill::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
-            animation: shimmerEffect 2.2s infinite;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 65%;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 245, 248, 0) 0%,
+                rgba(255, 240, 246, 0.38) 50%,
+                rgba(255, 245, 248, 0) 100%
+            );
+            transform: translateX(-160%);
+            animation: softShimmerCycle 6s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        @keyframes shimmerEffect {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        @keyframes softShimmerCycle {
+            0% { transform: translateX(-160%); }
+            24% { transform: translateX(250%); }
+            100% { transform: translateX(250%); }
         }
 
         .progress-note {
@@ -702,7 +763,6 @@
             text-overflow: ellipsis;
         }
 
-        /* 3. Animated Step Tracker: จุดขั้นตอนทั้ง 4 ขั้นเปลี่ยนสถานะนุ่มนวล */
         .stepper-wrap {
             position: relative;
             padding: 2px 2px 0;
@@ -787,7 +847,6 @@
             font-weight: 600;
         }
 
-        /* Admin 2 Big Action Buttons */
         .admin-actions-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -795,62 +854,32 @@
         }
 
         .action-big-btn {
-            border-radius: 18px;
+            border-radius: 16px;
             padding: 12px 8px;
-            border: 1.5px solid var(--pink-200);
+            border: 1px solid var(--pink-200);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .action-big-btn:hover {
-            transform: translateY(-2.5px);
+            transition: transform 0.15s, box-shadow 0.2s;
         }
 
         .action-big-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.97);
         }
 
         .action-big-btn.primary {
-            background: linear-gradient(135deg, var(--pink-400) 0%, var(--pink-600) 100%);
+            background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
             color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 8px 18px rgba(244, 54, 118, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-        }
-
-        .action-big-btn.primary::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 65%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
-            transform: skewX(-20deg);
-            animation: btnSheenSlide 3.8s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes btnSheenSlide {
-            0%, 60% { left: -100%; }
-            100% { left: 160%; }
+            border: none;
+            box-shadow: 0 6px 16px rgba(244, 54, 118, 0.26);
         }
 
         .action-big-btn.secondary {
-            background: linear-gradient(180deg, #ffffff 0%, var(--pink-50) 100%);
+            background: var(--pink-50);
             color: var(--pink-700);
-            box-shadow: 0 4px 12px rgba(244, 54, 118, 0.08), inset 0 1px 0 #ffffff;
-        }
-
-        .action-big-btn.secondary:hover {
-            border-color: var(--pink-300);
-            box-shadow: 0 8px 16px rgba(244, 54, 118, 0.15), inset 0 1px 0 #ffffff;
         }
 
         .action-icon-circle {
@@ -882,7 +911,9 @@
             margin-top: 1px;
         }
 
-        /* 5. Queue List (กะทัดรัดขึ้น) */
+        /* ==============================================================
+           5. Queue List & 10 Micro-interactions สำหรับ "รายการคิวทั้งหมด"
+           ============================================================== */
         .queue-list {
             display: flex;
             flex-direction: column;
@@ -891,89 +922,240 @@
 
         .queue-row {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 11px;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 8px 11px;
             border-radius: 16px;
-            background: linear-gradient(135deg, #ffffff 0%, #fffbfd 100%);
+            background: #fff;
             border: 1px solid var(--pink-100);
-            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform 0.17s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.3s ease, background-color 0.25s ease;
             cursor: pointer;
             position: relative;
+            overflow: hidden;
+            transform-origin: center center;
         }
 
         .queue-row:hover {
             border-color: var(--pink-300);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(244, 54, 118, 0.11);
+        }
+
+        /* [2] 🎀 Soft Press Interaction */
+        .queue-row.is-pressing {
+            transform: scale(0.99);
+        }
+
+        .queue-row-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
         }
 
         .queue-row.active-row {
-            background: linear-gradient(135deg, #fff3f7 0%, #ffffff 60%, #fff9eb 100%);
-            border: 1.5px solid var(--pink-400);
-            box-shadow: 0 4px 12px rgba(244, 54, 118, 0.10);
+            background: var(--pink-50);
+            border: 1.5px solid var(--pink-300);
+            box-shadow: 0 4px 12px rgba(244, 54, 118, 0.08);
         }
 
-        .queue-mini-box {
-            width: 68px;
-            height: 54px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            text-align: center;
-            padding: 4px 4px 2px;
-            border-radius: 10px;
-            background: #fff;
-            border: 1px solid var(--pink-200);
-            flex-shrink: 0;
-            position: relative;
-            overflow: visible;
+        /* [1] 💗 Active Queue Glow: เฉพาะคิวที่กำลังดำเนินการ (step === 1) เรืองแสงช้า ๆ 4 วินาที */
+        .queue-row.in-progress-glow {
+            border-color: var(--pink-400);
+            animation: activeQueueBorderGlow 4s ease-in-out infinite;
         }
 
-        .queue-mini-box.has-frame {
-            background-color: transparent !important;
-            border-color: transparent !important;
-            background-size: contain !important;
-            background-repeat: no-repeat !important;
-            background-position: center top !important;
-            padding: 2px 2px 1px;
-            filter: drop-shadow(0 4px 8px rgba(244, 54, 118, 0.22));
-            animation: cutePngFloat 3.6s ease-in-out infinite;
-            transition: transform 0.25s ease, filter 0.25s ease;
+        @keyframes activeQueueBorderGlow {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(244, 54, 118, 0.08), 0 0 0 0 rgba(255, 154, 187, 0);
+            }
+            50% {
+                box-shadow: 0 5px 16px rgba(244, 54, 118, 0.19), 0 0 12px 1.5px rgba(255, 154, 187, 0.42);
+            }
         }
 
-        .queue-row:hover .queue-mini-box.has-frame {
-            transform: scale(1.08) translateY(-2px);
-            filter: drop-shadow(0 6px 10px rgba(244, 54, 118, 0.34));
-        }
-
-        .queue-mini-box.has-frame::after {
-            content: '✦';
+        /* [6] 💎 Shimmer Border Highlight */
+        .shimmer-border-ring {
             position: absolute;
-            top: 0px;
-            right: 2px;
-            font-size: 9px;
-            color: var(--gold-500);
-            text-shadow: 0 0 3px #fff;
-            animation: sparkleBadge 2.3s ease-in-out infinite;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .shimmer-border-ring::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -90%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 240, 246, 0.95), rgba(212, 175, 55, 0.85), transparent);
+            animation: borderTopShimmer 10s ease-in-out infinite;
+        }
+
+        .shimmer-border-ring::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -90%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.85), rgba(255, 240, 246, 0.95), transparent);
+            animation: borderBottomShimmer 10s ease-in-out infinite;
+        }
+
+        @keyframes borderTopShimmer {
+            0%, 72% { transform: translateX(0); opacity: 0; }
+            78% { opacity: 1; }
+            95% { transform: translateX(260%); opacity: 0.9; }
+            100% { transform: translateX(280%); opacity: 0; }
+        }
+
+        @keyframes borderBottomShimmer {
+            0%, 72% { transform: translateX(0); opacity: 0; }
+            78% { opacity: 1; }
+            95% { transform: translateX(-260%); opacity: 0.9; }
+            100% { transform: translateX(-280%); opacity: 0; }
+        }
+
+        /* [9] 🫧 Pearl Sweep Effect */
+        .pearl-sweep-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        .pearl-sweep-layer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -75%;
+            width: 60%;
+            background: linear-gradient(
+                105deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 246, 250, 0.58) 48%,
+                rgba(253, 246, 226, 0.35) 65%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: translateX(0);
+            opacity: 0;
             pointer-events: none;
         }
 
+        .queue-row.pearl-sweeping .pearl-sweep-layer::after {
+            animation: pearlSweepOnce 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes pearlSweepOnce {
+            0% { transform: translateX(0); opacity: 0.95; }
+            100% { transform: translateX(390%); opacity: 0; }
+        }
+
+        /* [7] 💕 Fresh Update Indicator */
+        .fresh-update-badge {
+            position: absolute;
+            top: 4px;
+            right: 34px;
+            z-index: 5;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--pink-500), var(--pink-400));
+            color: #fff;
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            box-shadow: 0 2px 6px rgba(244, 54, 118, 0.25);
+            pointer-events: none;
+            animation: freshBadgePop 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .fresh-update-dot {
+            width: 4.5px;
+            height: 4.5px;
+            border-radius: 50%;
+            background: #fff;
+            display: inline-block;
+        }
+
+        @keyframes freshBadgePop {
+            from { opacity: 0.2; transform: scale(0.75); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ป้ายคิวในรายการคิวทั้งหมด: เอาขอบออก รูป PNG ใหญ่ชัด (42x42px) เลขคิวเล็กด้านล่าง */
+        .queue-mini-box {
+            width: 56px;
+            min-width: 56px;
+            max-width: 56px;
+            height: 54px;
+            text-align: center;
+            padding: 0;
+            border-radius: 0;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            flex-shrink: 0;
+            position: relative;
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+        }
+
+        .queue-mini-icon {
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            max-width: 42px !important;
+            min-height: 42px !important;
+            max-height: 42px !important;
+            object-fit: contain !important;
+            display: block;
+            margin: 0 auto;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .queue-mini-box.has-frame {
+            background: transparent !important;
+            border: none !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            padding: 0;
+        }
+
+        .queue-mini-box.has-frame small,
+        .queue-mini-box.has-frame strong {
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95), 0 0 6px rgba(255, 255, 255, 0.9);
+        }
+
         .queue-mini-box small {
-            display: none !important;
+            display: block;
+            font-size: 7.5px;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 2;
         }
 
         .queue-mini-box strong {
-            font-size: 10.5px;
-            font-weight: 700;
-            line-height: 1.1;
-            color: var(--pink-700);
-            background: rgba(255, 255, 255, 0.92);
-            padding: 1px 6px;
-            border-radius: 999px;
-            border: 1px solid var(--pink-200);
-            box-shadow: 0 2px 5px rgba(244, 54, 118, 0.15);
+            font-size: 8.5px;
+            line-height: 1.05;
+            color: var(--text-dark);
+            white-space: nowrap;
             position: relative;
             z-index: 2;
         }
@@ -990,6 +1172,7 @@
             margin-bottom: 5px;
         }
 
+        /* [5] 🌸 Status Morphing Badge */
         .status-chip {
             font-size: 10px;
             font-weight: 600;
@@ -997,11 +1180,81 @@
             border-radius: 999px;
             background: var(--pink-100);
             color: var(--pink-700);
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            position: relative;
+            transition: background-color 0.26s ease, color 0.26s ease, border-color 0.26s ease, transform 0.25s ease;
         }
 
-        .queue-row.active-row .status-chip {
+        .status-chip.step-chip-0 {
+            background: var(--pink-100);
+            color: var(--pink-700);
+        }
+
+        .status-chip.step-chip-1 {
+            background: var(--pink-500);
+            color: #ffffff;
+        }
+
+        .status-chip.step-chip-2 {
+            background: var(--pink-200);
+            color: var(--pink-700);
+        }
+
+        .status-chip.step-chip-3 {
+            background: var(--gold-light);
+            color: #8a6914;
+            border: 1px solid #ebd07a;
+        }
+
+        .queue-row.active-row .status-chip.step-chip-1 {
             background: var(--pink-500);
             color: #fff;
+        }
+
+        .status-chip.morph-anim {
+            animation: statusBadgeMorph 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes statusBadgeMorph {
+            0% { opacity: 0.5; transform: scale(0.92); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .completed-check-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9.5px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .completed-check-icon.pop-check {
+            animation: checkPopIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes checkPopIn {
+            0% { transform: scale(0.4); }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .status-chip.status-breathing,
+        .live-pill.status-breathing {
+            animation: statusBreathingGlow 3.6s ease-in-out infinite;
+        }
+
+        .status-chip.status-calm,
+        .live-pill.status-calm {
+            animation: none !important;
+            box-shadow: none !important;
+        }
+
+        @keyframes statusBreathingGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 54, 118, 0.05); }
+            50% { box-shadow: 0 0 9px 2.5px rgba(244, 54, 118, 0.26); }
         }
 
         .customer-name-sub {
@@ -1018,70 +1271,429 @@
             background: var(--pink-100);
             border-radius: 999px;
             overflow: hidden;
+            position: relative;
         }
 
+        /* [4] ✨ Animated Progress Fill */
         .mini-bar-fill {
             height: 100%;
             border-radius: 999px;
             background: linear-gradient(90deg, var(--pink-400), var(--pink-600));
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .queue-row-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .accordion-chevron {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            color: var(--pink-400);
+            font-size: 12px;
+            font-weight: 700;
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s;
+            user-select: none;
+        }
+
+        .queue-row.accordion-open .accordion-chevron {
+            transform: rotate(90deg);
+            background: var(--pink-100);
+            color: var(--pink-600);
+        }
+
+        /* [3] 💌 Accordion Queue Card */
+        .queue-accordion-panel {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.26s ease, margin-top 0.28s ease;
+            margin-top: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .queue-row.accordion-open .queue-accordion-panel {
+            max-height: 240px;
+            opacity: 1;
+            margin-top: 9px;
+        }
+
+        .queue-accordion-box {
+            background: var(--pink-50);
+            border: 1px dashed var(--pink-200);
+            border-radius: 12px;
+            padding: 9px 11px;
+            font-size: 11px;
+            color: var(--text-dark);
+        }
+
+        .queue-row.active-row .queue-accordion-box {
+            background: #ffffff;
+        }
+
+        .accordion-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 10px;
+            margin-bottom: 8px;
+        }
+
+        .accordion-info-item {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .accordion-info-label {
+            color: var(--text-muted);
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .accordion-info-val {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 10.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* [8] 🎀 Mini Progress Timeline */
+        .mini-timeline-wrap {
+            position: relative;
+            padding: 6px 2px 2px;
+            border-top: 1px solid rgba(255, 154, 187, 0.28);
+            margin-top: 4px;
+        }
+
+        .mini-timeline-track {
+            position: absolute;
+            top: 14px;
+            left: 12%;
+            right: 12%;
+            height: 2px;
+            background: var(--pink-100);
+            z-index: 1;
+        }
+
+        .mini-timeline-fill {
+            position: absolute;
+            top: 14px;
+            left: 12%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--pink-400), var(--pink-600));
+            z-index: 2;
+            transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .mini-timeline-nodes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            text-align: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .mini-tl-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mini-tl-dot {
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1.5px solid var(--pink-200);
+            color: var(--text-muted);
+            font-size: 8.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .mini-tl-node.passed .mini-tl-dot {
+            background: var(--pink-400);
+            border-color: var(--pink-500);
+            color: #fff;
+        }
+
+        .mini-tl-node.current .mini-tl-dot {
+            background: var(--pink-500);
+            border-color: var(--pink-600);
+            color: #fff;
+            box-shadow: 0 0 0 3px var(--pink-100);
+            transform: scale(1.08);
+        }
+
+        .mini-tl-label {
+            font-size: 9px;
+            margin-top: 3px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .mini-tl-node.passed .mini-tl-label {
+            color: var(--pink-600);
+        }
+
+        .mini-tl-node.current .mini-tl-label {
+            color: var(--pink-700);
+            font-weight: 700;
+        }
+
+        .accordion-footer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 7px;
+            padding-top: 5px;
+            border-top: 1px dashed rgba(255, 154, 187, 0.25);
+            gap: 8px;
+        }
+
+        .accordion-time-text {
+            font-size: 9.5px;
+            color: var(--text-muted);
+        }
+
+        .accordion-popup-btn {
+            border: 1px solid var(--pink-200);
+            background: #fff;
+            color: var(--pink-600);
+            border-radius: 999px;
+            padding: 2.5px 9px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .accordion-popup-btn:active {
+            transform: scale(0.95);
         }
 
         .admin-select {
-            padding: 6px 10px;
-            border-radius: 999px;
-            border: 1.5px solid var(--pink-200);
-            background: linear-gradient(180deg, #ffffff 0%, var(--pink-50) 100%);
+            padding: 5px 8px;
+            border-radius: 10px;
+            border: 1px solid var(--pink-200);
+            background: #fff;
             font-size: 11px;
             font-weight: 600;
-            color: var(--pink-700);
+            color: var(--text-dark);
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(244, 54, 118, 0.1), inset 0 1px 0 #ffffff;
-            transition: all 0.2s ease;
-        }
-
-        .admin-select:hover {
-            border-color: var(--pink-400);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(244, 54, 118, 0.16);
         }
 
         .search-input {
             width: 100%;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 999px;
-            border: 1.5px solid var(--pink-200);
-            background: linear-gradient(180deg, var(--pink-50) 0%, #ffffff 100%);
+            border: 1px solid var(--pink-200);
+            background: var(--pink-50);
             font-size: 11px;
             outline: none;
             margin-bottom: 10px;
-            transition: all 0.25s ease;
-            box-shadow: inset 0 1px 3px rgba(244, 54, 118, 0.06);
         }
 
-        .search-input:focus {
+        /* ==============================================================
+           Floating Mascot Assistant (ภายในส่วนรายการคิวทั้งหมด เหนือการ์ดคิวใบแรก)
+           ============================================================== */
+        .mascot-assistant-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            margin: 2px 0 10px 0;
+            padding: 2px 2px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .mascot-speech-bubble {
+            position: relative;
+            background: linear-gradient(135deg, #ffffff 0%, var(--pink-50) 100%);
+            border: 1px solid var(--pink-200);
+            border-radius: 16px;
+            padding: 8px 12px;
+            box-shadow: 0 6px 16px -4px rgba(244, 54, 118, 0.12), 0 2px 6px rgba(212, 175, 55, 0.06);
+            max-width: calc(100% - 82px);
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--text-dark);
+            animation: mascotBubbleFadeIn 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .mascot-speech-bubble::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            background: var(--pink-50);
+            border-top: 1px solid var(--pink-200);
+            border-right: 1px solid var(--pink-200);
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .mascot-speech-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+        }
+
+        .mascot-speech-text strong {
+            color: var(--pink-600);
+            font-weight: 700;
+        }
+
+        @keyframes mascotBubbleFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mascot-figure-slot {
+            width: 68px;
+            height: 68px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: mascotGentleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes mascotGentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .mascot-figure-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 5px 10px rgba(244, 54, 118, 0.16));
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .mascot-placeholder-slot {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            border: 1.5px dashed var(--pink-300);
+            background: rgba(255, 245, 248, 0.65);
+            color: var(--pink-500);
+            font-size: 9px;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            line-height: 1.25;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .mascot-placeholder-slot:hover {
+            background: var(--pink-100);
             border-color: var(--pink-400);
-            background: #ffffff;
-            box-shadow: 0 0 0 3px var(--pink-100);
         }
 
-        /* Modals & Backdrop */
+        /* Soft Sparkle Effect */
+        .sparkle-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: inherit;
+            z-index: 4;
+        }
+
+        .soft-sparkle-star {
+            position: absolute;
+            width: 11px;
+            height: 11px;
+            opacity: 0;
+            pointer-events: none;
+            animation: softSparkleFloat 2.4s ease-in-out forwards;
+        }
+
+        @keyframes softSparkleFloat {
+            0% { opacity: 0; transform: translateY(4px) scale(0.5) rotate(0deg); }
+            45% { opacity: 0.85; transform: translateY(-2px) scale(1) rotate(20deg); }
+            100% { opacity: 0; transform: translateY(-8px) scale(0.6) rotate(40deg); }
+        }
+
+        /* Staggered Reveal */
+        .stagger-reveal-item {
+            animation: cardStaggerReveal 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes cardStaggerReveal {
+            0% { transform: translateY(8px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* [10] 🎉 Queue Completion Reveal */
+        .celebration-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: inherit;
+            z-index: 15;
+        }
+
+        .celebration-particle {
+            position: absolute;
+            bottom: 8px;
+            opacity: 0;
+            pointer-events: none;
+            animation: miniCelebrateRise 1s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes miniCelebrateRise {
+            0% { opacity: 0; transform: translate(0, 4px) scale(0.55); }
+            25% { opacity: 0.95; transform: translate(var(--drift-x, 0px), -12px) scale(1); }
+            100% { opacity: 0; transform: translate(calc(var(--drift-x, 0px) * 1.35), -38px) scale(0.75); }
+        }
+
+        /* Modals & Backdrop (อยู่กลางหน้าเว็บเท่านั้น) */
         .modal-backdrop {
             position: fixed;
             inset: 0;
-            background: rgba(38, 14, 24, 0.45);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(28, 12, 18, 0.48);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             display: none;
             align-items: center;
             justify-content: center;
             padding: 16px;
             z-index: 60;
-            animation: backdropFadeIn 0.22s ease-out;
-        }
-
-        @keyframes backdropFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-backdrop.open {
@@ -1089,135 +1701,142 @@
         }
 
         .modal-card {
-            background: linear-gradient(180deg, #ffffff 0%, #fff9fb 100%);
-            border-radius: 26px;
+            background: #fff;
+            border-radius: 24px;
             max-width: 440px;
             width: 100%;
-            padding: 22px 20px;
-            border: 1.5px solid var(--pink-200);
-            box-shadow: 0 24px 50px rgba(176, 16, 71, 0.22), 0 0 0 4px rgba(255, 255, 255, 0.65), inset 0 1px 0 #ffffff;
+            padding: 20px;
+            border: 1px solid var(--pink-200);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.2);
             max-height: 90vh;
             overflow-y: auto;
-            position: relative;
-            animation: modalPopSpring 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .modal-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20px;
-            right: 20px;
-            height: 4px;
-            border-radius: 0 0 999px 999px;
-            background: linear-gradient(90deg, var(--pink-300), var(--pink-500), var(--gold-400));
-            opacity: 0.85;
-        }
-
-        @keyframes modalPopSpring {
-            0% {
-                opacity: 0;
-                transform: scale(0.88) translateY(14px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        /* 4. Queue Detail Bottom Sheet: แผงรายละเอียดเลื่อนขึ้นจากด้านล่าง */
         .modal-backdrop.bottom-sheet-backdrop {
-            align-items: flex-end;
-            padding: 0;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
         }
 
         .modal-card.bottom-sheet-card {
-            max-width: 480px;
-            margin: 0 auto;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            padding: 22px 20px 30px 20px;
-            border-top: 2px solid var(--pink-300);
-            box-shadow: 0 -12px 40px rgba(244, 54, 118, 0.22), inset 0 2px 0 #ffffff;
-            animation: slideUpSheet 0.34s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .modal-card.bottom-sheet-card::before {
-            display: none;
-        }
-
-        @keyframes slideUpSheet {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
+            max-width: 420px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 20px;
+            animation: lightboxZoomIn 0.24s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .bottom-sheet-handle {
-            width: 46px;
-            height: 5px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, var(--pink-200), var(--pink-400), var(--pink-200));
-            margin: 0 auto 16px auto;
+            display: none;
         }
 
-        /* 5. Progress Photo Lightbox: เมื่อกดรูปอัปเดตความคืบหน้าให้ขยายดูภาพเต็มจอ */
+        /* Photo Lightbox */
         .lightbox-backdrop {
             position: fixed;
             inset: 0;
-            background: rgba(20, 8, 14, 0.9);
-            z-index: 100;
+            background: rgba(28, 10, 18, 0.88);
+            z-index: 9999;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
             backdrop-filter: blur(8px);
-            animation: backdropFadeIn 0.2s ease-out;
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .lightbox-backdrop.open {
             display: flex;
+            animation: lightboxFadeIn 0.22s ease-out;
+        }
+
+        @keyframes lightboxFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .lightbox-content {
             position: relative;
-            max-width: 90vw;
-            max-height: 85vh;
+            max-width: 92vw;
+            max-height: 86vh;
             text-align: center;
-            animation: modalPopSpring 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: lightboxZoomIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes lightboxZoomIn {
+            from { opacity: 0.4; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .lightbox-content img {
             max-width: 100%;
-            max-height: 80vh;
+            max-height: 78vh;
+            width: auto;
+            height: auto;
             object-fit: contain;
-            border-radius: 18px;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0 0 0 3px rgba(255, 192, 213, 0.45);
-            border: 2px solid #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 12px 38px rgba(0,0,0,0.48);
+            border: 1.5px solid rgba(255, 228, 237, 0.35);
+            background: rgba(255, 255, 255, 0.04);
+            user-select: none;
         }
 
         .lightbox-close {
             position: absolute;
             top: -46px;
             right: 0;
-            background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
+            background: rgba(255, 245, 248, 0.22);
             color: #fff;
-            border: 2px solid #ffffff;
+            border: 1px solid rgba(255, 200, 218, 0.45);
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(244, 54, 118, 0.4);
-            transition: transform 0.2s ease;
         }
 
-        .lightbox-close:hover {
-            transform: scale(1.1) rotate(90deg);
+        .lightbox-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 245, 248, 0.22);
+            color: #fff;
+            border: 1px solid rgba(255, 200, 218, 0.45);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+        }
+
+        .lightbox-nav-btn.prev { left: -48px; }
+        .lightbox-nav-btn.next { right: -48px; }
+
+        @media (max-width: 560px) {
+            .lightbox-nav-btn.prev { left: 8px; }
+            .lightbox-nav-btn.next { right: 8px; }
+        }
+
+        .lightbox-counter {
+            margin-top: 10px;
+            padding: 3px 12px;
+            border-radius: 999px;
+            background: rgba(255, 245, 248, 0.18);
+            border: 1px solid rgba(255, 200, 218, 0.35);
+            color: #fff5f8;
+            font-size: 11px;
+            font-weight: 600;
         }
 
         .form-group {
@@ -1234,397 +1853,334 @@
 
         .form-control {
             width: 100%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            border: 1.5px solid var(--pink-200);
+            padding: 8px 11px;
+            border-radius: 10px;
+            border: 1px solid var(--pink-200);
             font-size: 12px;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: #ffffff;
-        }
-
-        .form-control:focus {
-            border-color: var(--pink-400);
-            box-shadow: 0 0 0 3px var(--pink-100);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--pink-400) 0%, var(--pink-600) 100%);
+            background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
             color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            padding: 10px 18px;
-            border-radius: 999px;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 11px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 5px 14px rgba(244, 54, 118, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(244, 54, 118, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.95);
         }
 
         .btn-light {
-            background: linear-gradient(180deg, #ffffff 0%, var(--pink-50) 100%);
-            color: var(--pink-700);
-            border: 1.5px solid var(--pink-200);
-            padding: 8px 15px;
-            border-radius: 999px;
+            background: #f3f4f6;
+            color: #4b5563;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 11px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(244, 54, 118, 0.08);
-            transition: all 0.2s ease;
-        }
-
-        .btn-light:hover {
-            background: var(--pink-100);
-            border-color: var(--pink-300);
-            transform: translateY(-1px);
-        }
-
-        .btn-light:active {
-            transform: scale(0.95);
         }
 
         .btn-danger {
-            background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+            background: #ffe4e6;
             color: #e11d48;
-            border: 1.5px solid #fecdd3;
-            padding: 8px 14px;
-            border-radius: 999px;
+            border: none;
+            padding: 9px 12px;
+            border-radius: 11px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .btn-danger:hover {
-            background: #fecdd3;
-            transform: translateY(-1px);
-        }
-
+        /* Sweet Toast Notification */
         .toast-box {
             position: fixed;
-            bottom: 22px;
-            right: 22px;
-            background: linear-gradient(135deg, #3a2029 0%, #241218 100%);
-            color: #fff;
-            padding: 11px 18px;
+            bottom: 18px;
+            right: 18px;
+            background: rgba(255, 248, 251, 0.97);
+            color: var(--pink-700);
+            padding: 9px 15px;
             border-radius: 999px;
-            border: 1.5px solid rgba(255, 182, 205, 0.45);
+            border: 1px solid var(--pink-200);
             font-size: 11.5px;
-            font-weight: 500;
-            box-shadow: 0 12px 28px rgba(244, 54, 118, 0.28);
-            display: none;
+            font-weight: 600;
+            box-shadow: 0 8px 22px -4px rgba(244, 54, 118, 0.18), 0 2px 6px rgba(212, 175, 55, 0.08);
+            display: flex;
             align-items: center;
-            gap: 8px;
-            z-index: 110;
-            animation: modalPopSpring 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            gap: 7px;
+            z-index: 9500;
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1), transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+            max-width: calc(100vw - 36px);
         }
 
         .toast-box.show {
-            display: flex;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* ===================================================
-           SPLASH / LOADING SCREEN
-           (Mascot Peekaboo + Mascot Wave + Floating Hearts + Bouncing Hearts Loader + Cloud Dissolve)
-           =================================================== */
+        /* ==============================================================
+           Loading / Splash Screen (แสดงก่อนหน้าเว็บหลัก ไม่ให้หน้าหลักแวบขึ้นมาก่อน)
+           ลูกเล่น: Mascot Peekaboo + Mascot Wave + Floating Hearts + Bouncing Hearts Loader + Cloud Dissolve
+           ============================================================== */
         body.splash-lock {
-            overflow: hidden;
+            overflow: hidden !important;
         }
 
-        .splash-screen {
+        body.splash-lock .main-container {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .main-container {
+            transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .khaw-splash-screen {
             position: fixed;
             inset: 0;
-            z-index: 9999;
-            background: radial-gradient(circle at 50% 35%, #ffffff 0%, #fff0f5 52%, #ffe0eb 100%);
+            z-index: 12000;
+            background: radial-gradient(circle at 50% 35%, #fff8fb 0%, #ffe8f1 52%, #ffdbe9 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 24px;
+            text-align: center;
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
+            transition: opacity 0.58s cubic-bezier(0.22, 1, 0.36, 1), filter 0.58s cubic-bezier(0.22, 1, 0.36, 1), transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* 1. Cloud Dissolve Transition */
-        .splash-screen::before,
-        .splash-screen::after {
+        /* [5] Cloud Dissolve: เอฟเฟกต์ม่านเมฆฟุ้งละลายอย่างนุ่มนวลเมื่อเข้าสู่หน้าหลัก */
+        .khaw-splash-screen::before,
+        .khaw-splash-screen::after {
             content: '';
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 228, 237, 0.65) 55%, rgba(255, 245, 248, 0) 75%);
-            filter: blur(16px);
-            opacity: 0.7;
-            transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.75s ease;
-        }
-
-        .splash-screen::before {
-            width: 340px;
-            height: 340px;
-            top: -80px;
-            left: -80px;
-        }
-
-        .splash-screen::after {
-            width: 380px;
-            height: 380px;
-            bottom: -100px;
-            right: -90px;
-        }
-
-        .splash-screen.cloud-dissolve {
-            pointer-events: none;
-            animation: cloudDissolveExit 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-
-        .splash-screen.cloud-dissolve::before {
-            transform: scale(2.8) translate(18%, 18%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.92) 0%, rgba(255, 240, 246, 0.65) 55%, rgba(255, 228, 237, 0) 75%);
             opacity: 0;
-        }
-
-        .splash-screen.cloud-dissolve::after {
-            transform: scale(2.8) translate(-18%, -18%);
-            opacity: 0;
-        }
-
-        @keyframes cloudDissolveExit {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-                filter: blur(0px);
-            }
-            45% {
-                opacity: 0.92;
-                transform: scale(1.04);
-                filter: blur(4px);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(1.14);
-                filter: blur(18px);
-                visibility: hidden;
-            }
-        }
-
-        /* 2. Floating Hearts */
-        .splash-floating-hearts {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
+            transform: scale(0.75);
+            transition: opacity 0.58s ease, transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
             z-index: 1;
         }
 
-        .floating-heart {
-            position: absolute;
-            bottom: -36px;
-            color: var(--pink-400);
+        .khaw-splash-screen::before {
+            width: 90vmax;
+            height: 90vmax;
+            top: -20vmax;
+            left: -15vmax;
+        }
+
+        .khaw-splash-screen::after {
+            width: 95vmax;
+            height: 95vmax;
+            bottom: -22vmax;
+            right: -15vmax;
+        }
+
+        .khaw-splash-screen.cloud-dissolving {
             opacity: 0;
-            font-size: var(--h-size, 18px);
-            left: var(--h-left, 50%);
-            animation: floatHeartUp var(--h-dur, 4s) ease-in infinite;
-            animation-delay: var(--h-delay, 0s);
-            filter: drop-shadow(0 2px 6px rgba(244, 54, 118, 0.2));
+            filter: blur(12px);
+            transform: scale(1.04);
+            pointer-events: none;
         }
 
-        @keyframes floatHeartUp {
-            0% {
-                transform: translateY(0) translateX(0) scale(0.75) rotate(-8deg);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.65;
-            }
-            65% {
-                opacity: 0.55;
-            }
-            100% {
-                transform: translateY(-78vh) translateX(var(--h-drift, 18px)) scale(1.12) rotate(12deg);
-                opacity: 0;
-            }
+        .khaw-splash-screen.cloud-dissolving::before,
+        .khaw-splash-screen.cloud-dissolving::after {
+            opacity: 1;
+            transform: scale(1.25);
         }
 
-        /* Center Composition (No extra boxy background frame) */
-        .splash-center {
+        .khaw-splash-center {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
+            justify-content: center;
             max-width: 320px;
             width: 100%;
         }
 
+        /* [3] Floating Hearts: หัวใจลอยละมุนรอบโลโก้และมาสคอต */
+        .splash-floating-hearts {
+            position: absolute;
+            inset: -30px -20px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .splash-float-heart {
+            position: absolute;
+            color: var(--pink-400);
+            font-size: 14px;
+            opacity: 0;
+            animation: splashHeartFloatUp 2.6s ease-in-out infinite;
+            filter: drop-shadow(0 2px 4px rgba(244, 54, 118, 0.12));
+        }
+
+        .splash-float-heart.h1 { left: 14%; bottom: 38%; animation-delay: 0.1s; font-size: 13px; color: var(--pink-300); }
+        .splash-float-heart.h2 { right: 14%; bottom: 42%; animation-delay: 0.45s; font-size: 16px; color: var(--pink-400); }
+        .splash-float-heart.h3 { left: 24%; top: 18%; animation-delay: 0.85s; font-size: 12px; color: var(--gold-500); }
+        .splash-float-heart.h4 { right: 22%; top: 14%; animation-delay: 1.2s; font-size: 14px; color: var(--pink-500); }
+        .splash-float-heart.h5 { left: 48%; top: 4%; animation-delay: 0.6s; font-size: 11px; color: var(--pink-300); }
+
+        @keyframes splashHeartFloatUp {
+            0% { opacity: 0; transform: translateY(10px) scale(0.75) rotate(-8deg); }
+            40% { opacity: 0.85; transform: translateY(-4px) scale(1) rotate(6deg); }
+            100% { opacity: 0; transform: translateY(-22px) scale(0.85) rotate(-6deg); }
+        }
+
+        /* โลโก้ + [1] Mascot Peekaboo + [2] Mascot Wave (ไม่มีกรอบสี่เหลี่ยมพื้นหลัง) */
         .splash-stage {
             position: relative;
-            width: 156px;
-            height: 146px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            margin-bottom: 14px;
-        }
-
-        /* 3. Mascot Peekaboo + 4. Mascot Wave */
-        .mascot-peekaboo-wrap {
-            position: absolute;
-            top: 2px;
-            left: 50%;
-            transform: translate(-50%, 38px) scale(0.86);
-            z-index: 1;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            animation: mascotPeekaboo 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s forwards;
-        }
-
-        @keyframes mascotPeekaboo {
-            0% {
-                transform: translate(-50%, 42px) scale(0.82);
-                opacity: 0;
-            }
-            60% {
-                transform: translate(-50%, -10px) scale(1.03);
-                opacity: 1;
-            }
-            80% {
-                transform: translate(-50%, -3px) scale(0.98);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -7px) scale(1);
-                opacity: 1;
-            }
-        }
-
-        .mascot-figure {
-            width: 82px;
-            height: 64px;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 10px rgba(244, 54, 118, 0.24));
-        }
-
-        .mascot-wave-paw {
-            position: absolute;
-            right: -14px;
-            top: 12px;
-            width: 26px;
-            height: 26px;
+            width: 146px;
+            height: 124px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transform-origin: 20% 85%;
-            animation: mascotWaveHand 0.65s ease-in-out infinite alternate;
-            filter: drop-shadow(0 2px 5px rgba(244, 54, 118, 0.22));
-        }
-
-        @keyframes mascotWaveHand {
-            0% { transform: rotate(-14deg) translateY(0); }
-            100% { transform: rotate(24deg) translateY(-2px); }
+            margin-bottom: 10px;
         }
 
         .splash-logo-ring {
             position: relative;
-            z-index: 2;
-            width: 96px;
-            height: 96px;
+            z-index: 3;
+            width: 82px;
+            height: 82px;
             border-radius: 50%;
             padding: 3px;
             background: linear-gradient(135deg, var(--pink-500), var(--gold-500));
-            box-shadow: 0 12px 28px rgba(244, 54, 118, 0.25), 0 0 0 6px rgba(255, 255, 255, 0.85);
+            box-shadow: 0 10px 26px rgba(244, 54, 118, 0.24);
+            animation: splashLogoSoftPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         .splash-logo-ring img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             object-fit: cover;
+            border-radius: 50%;
             border: 2.5px solid #ffffff;
             background: var(--pink-100);
             display: block;
         }
 
+        @keyframes splashLogoSoftPop {
+            0% { opacity: 0; transform: scale(0.82); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* [1] Mascot Peekaboo & [2] Mascot Wave */
+        .splash-mascot-peek {
+            position: absolute;
+            z-index: 2;
+            right: 4px;
+            bottom: 8px;
+            width: 66px;
+            height: 66px;
+            transform-origin: bottom left;
+            animation:
+                mascotPeekabooIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both,
+                mascotWaveWiggle 1.15s ease-in-out 0.74s infinite;
+        }
+
+        .splash-mascot-peek img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 6px 12px rgba(244, 54, 118, 0.2));
+        }
+
+        @keyframes mascotPeekabooIn {
+            0% {
+                opacity: 0;
+                transform: translate(-28px, 16px) scale(0.65) rotate(-18deg);
+            }
+            70% {
+                opacity: 1;
+                transform: translate(4px, -3px) scale(1.04) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1) rotate(6deg);
+            }
+        }
+
+        @keyframes mascotWaveWiggle {
+            0%, 100% { transform: translate(0, 0) rotate(6deg); }
+            30% { transform: translate(2px, -3px) rotate(15deg); }
+            65% { transform: translate(-1px, -1px) rotate(-3deg); }
+        }
+
         .splash-shop-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 0.3px;
             background: linear-gradient(90deg, var(--pink-700), var(--pink-500), #b8860b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             color: var(--pink-600);
-            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+            margin-bottom: 3px;
         }
 
         .splash-welcome-msg {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             color: var(--pink-600);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
-        /* 5. Bouncing Hearts Loader */
+        /* [4] Bouncing Hearts Loader */
         .bouncing-hearts-loader {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            height: 28px;
-            margin-bottom: 6px;
+            gap: 8px;
+            height: 24px;
+            margin-bottom: 4px;
         }
 
-        .bouncing-heart {
-            font-size: 16px;
+        .bouncing-heart-dot {
+            display: inline-block;
+            font-size: 14px;
             line-height: 1;
             color: var(--pink-500);
-            display: inline-block;
-            animation: bounceHeartLoader 0.68s cubic-bezier(0.28, 0.84, 0.42, 1) infinite alternate;
-            filter: drop-shadow(0 3px 6px rgba(244, 54, 118, 0.25));
+            animation: heartBounceWave 0.9s ease-in-out infinite;
         }
 
-        .bouncing-heart:nth-child(2) {
+        .bouncing-heart-dot:nth-child(2) {
             color: var(--pink-400);
             animation-delay: 0.16s;
         }
 
-        .bouncing-heart:nth-child(3) {
+        .bouncing-heart-dot:nth-child(3) {
             color: var(--gold-500);
             animation-delay: 0.32s;
         }
 
-        @keyframes bounceHeartLoader {
-            0% {
-                transform: translateY(0) scale(0.92);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-9px) scale(1.18);
-                opacity: 1;
-            }
+        @keyframes heartBounceWave {
+            0%, 100% { transform: translateY(0) scale(0.92); opacity: 0.7; }
+            45% { transform: translateY(-7px) scale(1.18); opacity: 1; }
         }
 
-        .splash-status-text {
-            font-size: 11px;
+        .splash-status-sub {
+            font-size: 10.5px;
             color: var(--text-muted);
             font-weight: 500;
+            min-height: 16px;
         }
 
-        .splash-error-box {
+        .splash-error-area {
             margin-top: 12px;
             display: flex;
             flex-direction: column;
@@ -1634,96 +2190,91 @@
 
         .splash-retry-btn {
             background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
-            color: #fff;
+            color: #ffffff;
             border: none;
-            padding: 8px 18px;
             border-radius: 999px;
-            font-size: 12px;
+            padding: 7px 18px;
+            font-size: 11.5px;
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(244, 54, 118, 0.25);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .splash-float-heart {
+                display: none !important;
+            }
+            .splash-mascot-peek,
+            .splash-logo-ring,
+            .bouncing-heart-dot {
+                animation: none !important;
+            }
         }
     </style>
 </head>
 <body class="splash-lock">
 
-    <!-- ===================================================
-         SPLASH / LOADING SCREEN (แสดงอัตโนมัติทันทีก่อนเห็นหน้าเว็บหลัก)
-         =================================================== -->
-    <div id="khawshop-splash" class="splash-screen" role="status" aria-live="polite">
-        <!-- Floating Hearts -->
-        <div class="splash-floating-hearts" aria-hidden="true">
-            <span class="floating-heart" style="--h-left:14%; --h-size:15px; --h-dur:3.8s; --h-delay:0.1s; --h-drift:14px;">♥</span>
-            <span class="floating-heart" style="--h-left:28%; --h-size:20px; --h-dur:4.4s; --h-delay:0.6s; --h-drift:-16px;">♡</span>
-            <span class="floating-heart" style="--h-left:48%; --h-size:14px; --h-dur:3.5s; --h-delay:0.3s; --h-drift:10px;">♥</span>
-            <span class="floating-heart" style="--h-left:70%; --h-size:19px; --h-dur:4.1s; --h-delay:0.2s; --h-drift:-14px;">♥</span>
-            <span class="floating-heart" style="--h-left:85%; --h-size:16px; --h-dur:3.9s; --h-delay:0.8s; --h-drift:12px;">♡</span>
-        </div>
+    <!-- Loading / Splash Screen (แสดงอัตโนมัติทันทีก่อนเข้าสู่หน้าเว็บไซต์หลัก) -->
+    <div id="khaw-splash-screen" class="khaw-splash-screen" role="status" aria-live="polite" aria-label="กำลังเตรียมข้อมูลระบบคิว KhawShop">
+        <div class="khaw-splash-center">
+            <!-- Floating Hearts -->
+            <div class="splash-floating-hearts" aria-hidden="true">
+                <span class="splash-float-heart h1">♥</span>
+                <span class="splash-float-heart h2">♡</span>
+                <span class="splash-float-heart h3">✦</span>
+                <span class="splash-float-heart h4">♥</span>
+                <span class="splash-float-heart h5">♡</span>
+            </div>
 
-        <div class="splash-center">
-            <!-- Mascot Peekaboo + Mascot Wave + Original Logo -->
+            <!-- Logo + Mascot Peekaboo & Mascot Wave -->
             <div class="splash-stage">
-                <div class="mascot-peekaboo-wrap" aria-hidden="true">
-                    <img class="mascot-figure"
-                         src="https://i.postimg.cc/4x8z03W8/IMG-0801.png"
-                         alt=""
-                         onerror="this.style.display='none'">
-                    <div class="mascot-wave-paw" title="Mascot Wave">
-                        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                            <ellipse cx="16" cy="19" rx="7.5" ry="6.5" fill="#fff0f5" stroke="#f43676" stroke-width="1.8"/>
-                            <circle cx="10.5" cy="12" r="2.6" fill="#ffc8da" stroke="#f43676" stroke-width="1.4"/>
-                            <circle cx="16" cy="10" r="2.8" fill="#ffc8da" stroke="#f43676" stroke-width="1.4"/>
-                            <circle cx="21.5" cy="12" r="2.6" fill="#ffc8da" stroke="#f43676" stroke-width="1.4"/>
-                            <ellipse cx="16" cy="19.5" rx="3.8" ry="3" fill="#ff9abb"/>
-                        </svg>
-                    </div>
-                </div>
-
                 <div class="splash-logo-ring">
                     <img id="splash-logo-img"
                          src="https://i.postimg.cc/brmbyvBz/att-NAG7x-CA9q-XOc-CONqh-F14WE9q1PX9t-AJ8anjf0s-JZPa-U.jpg"
                          alt="KhawShop Logo"
-                         onerror="this.style.opacity='0.2'">
+                         onerror="this.style.visibility='hidden'">
+                </div>
+                <div class="splash-mascot-peek">
+                    <img id="splash-mascot-img"
+                         src="https://i.postimg.cc/4x8z03W8/IMG-0801.png"
+                         alt="KhawShop Mascot"
+                         onerror="this.style.display='none'">
                 </div>
             </div>
 
-            <h2 id="splash-shop-title" class="splash-shop-title">KhawShop</h2>
-            <p id="splash-welcome-text" class="splash-welcome-msg">ยินดีต้อนรับ ✿ เช็คสถานะคิวเรียลไทม์</p>
+            <div id="splash-shop-title" class="splash-shop-title">KhawShop</div>
+            <p id="splash-welcome-msg" class="splash-welcome-msg">ยินดีต้อนรับ ✿ เช็คสถานะคิวเรียลไทม์</p>
 
             <!-- Bouncing Hearts Loader -->
             <div id="splash-loader-hearts" class="bouncing-hearts-loader" aria-hidden="true">
-                <span class="bouncing-heart">♥</span>
-                <span class="bouncing-heart">♥</span>
-                <span class="bouncing-heart">♥</span>
+                <span class="bouncing-heart-dot">♥</span>
+                <span class="bouncing-heart-dot">♥</span>
+                <span class="bouncing-heart-dot">♥</span>
             </div>
+            <p id="splash-status-sub" class="splash-status-sub">กำลังเตรียมข้อมูลคิวล่าสุด...</p>
 
-            <p id="splash-status-label" class="splash-status-text">กำลังเตรียมข้อมูลคิวล่าสุด...</p>
-
-            <!-- แสดงเมื่อเกิดข้อผิดพลาดในการเตรียมข้อมูล พร้อมปุ่มลองใหม่ -->
-            <div id="splash-error-container" class="splash-error-box hidden">
-                <p style="font-size:12px; color:#e11d48; font-weight:600;">ไม่สามารถเตรียมข้อมูลหน้าเว็บได้ในขณะนี้</p>
-                <button type="button" class="splash-retry-btn" onclick="retrySplashInitialization()">ลองใหม่อีกครั้ง</button>
+            <!-- กรณีโหลดข้อมูลไม่สำเร็จ -->
+            <div id="splash-error-area" class="splash-error-area hidden">
+                <p style="font-size:11.5px; color:#d91b5c; font-weight:600;">ยังโหลดข้อมูลไม่ได้ ลองใหม่อีกครั้งนะคะ</p>
+                <button type="button" class="splash-retry-btn" onclick="retrySplashBoot()">↻ ลองใหม่อีกครั้ง</button>
             </div>
         </div>
     </div>
 
-    <!-- ส่วนแสดงผลหลัก (นำแถบสลับโหมดด้านบนที่วงสีเขียวออกแล้ว) -->
     <main class="main-container">
         <div id="views-wrapper" class="views-grid">
 
-            <!-- ===================================================
-                 ฝั่งที่ 1: หน้าลูกค้า (เรียงลำดับ 1-5 ตรงตามแบบร่าง)
-                 =================================================== -->
+            <!-- ฝั่งที่ 1: หน้าลูกค้า -->
             <section id="customer-section">
                 <div class="view-badge split-label hidden">
                     <span>หน้าลูกค้า (มุมมองบนมือถือ)</span>
                 </div>
 
                 <div class="phone-shell">
-                    <div class="section-stack">
+                    <div class="section-stack" id="customer-stack">
 
-                        <!-- [ส่วนที่ 1: โลโก้ + ชื่อร้าน + ปุ่มไอคอนตั้งค่าหลังบ้านมุมขวาบน (ที่วงสีน้ำเงิน)] -->
-                        <header class="shop-header">
+                        <!-- [ส่วนที่ 1: โลโก้ + ชื่อร้าน + ปุ่มไอคอนตั้งค่าหลังบ้านมุมขวาบน] -->
+                        <header class="shop-header initial-reveal-card">
                             <div class="shop-brand">
                                 <div class="logo-wrapper" onclick="openImageConfigModal()" title="คลิกเพื่อเปลี่ยนรูปโลโก้">
                                     <img id="customer-logo-img" src="https://i.postimg.cc/brmbyvBz/att-NAG7x-CA9q-XOc-CONqh-F14WE9q1PX9t-AJ8anjf0s-JZPa-U.jpg" alt="KhawShop Logo">
@@ -1740,88 +2291,77 @@
                             <button type="button" class="icon-btn" onclick="switchViewMode('admin')" title="ตั้งค่าหลังบ้าน (หน้าแอดมิน)">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="3"></circle>
-                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                                 </svg>
                             </button>
                         </header>
 
-                        <!-- [ส่วนที่ 2: แบนเนอร์ 1 รูป (นำแถบข้อความทับแบนเนอร์ที่วงสีแดงออกแล้ว)] -->
-                        <div class="banner-box">
+                        <!-- [ส่วนที่ 2: แบนเนอร์ 1 รูป (เอาตัวหนังสือบนแบนเนอร์ออกแล้ว)] -->
+                        <div class="banner-box initial-reveal-card">
                             <img id="banner-image-el" src="https://i.postimg.cc/brmbyvBz/att-NAG7x-CA9q-XOc-CONqh-F14WE9q1PX9t-AJ8anjf0s-JZPa-U.jpg" alt="KhawShop Banner">
-                        </div>
-
-                        <!-- [ส่วนที่ 3: จำนวนคิวทั้งหมด + ปุ่มรีเฟรช] -->
-                        <div class="summary-card">
-                            <div class="summary-left">
-                                <div class="summary-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                </div>
-                                <div>
-                                    <p class="summary-label">จำนวนคิวทั้งหมด</p>
-                                    <div class="summary-count-row">
-                                        <span id="customer-total-queues" class="summary-count">4</span>
-                                        <span class="summary-unit">คิว</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="summary-right">
-                                <button type="button" class="btn-refresh" onclick="triggerRefresh()">
-                                    <span>↻</span> รีเฟรช
-                                </button>
-                                <p class="updated-text">อัปเดตล่าสุด <span class="last-updated-time">10:24 น.</span></p>
+                            <div class="banner-overlay hidden" aria-hidden="true">
+                                <span id="banner-caption" class="banner-caption"></span>
                             </div>
                         </div>
 
-                        <!-- [ส่วนที่ 4: ความคืบหน้าของคิวที่กำลังทำ (กำลังให้บริการ) พร้อม Soft Glow & Pulse Dot] -->
-                        <div id="customer-active-card-box" class="content-card soft-glow-active">
-                            <div class="card-header-row">
-                                <div class="card-title-group">
-                                    <span class="card-icon-badge">🛍️</span>
-                                    <h2 class="card-title">กำลังให้บริการ</h2>
-                                </div>
-                                <span class="live-pill"><span class="pulse-dot"></span> <span id="customer-active-status-pill-text">กำลังทำคิวนี้</span></span>
-                            </div>
-
-                            <div class="active-queue-box">
-                                <div id="customer-active-badge-box" class="queue-number-badge">
-                                    <strong id="customer-active-code">A008</strong>
-                                </div>
-                                <div class="progress-info">
-                                    <div class="progress-top-line">
-                                        <span id="customer-active-status-text">กำลังดำเนินการ</span>
-                                        <span id="customer-active-percent" class="progress-percent">60%</span>
+                        <!-- [ส่วนที่ 3 & 4: จำนวนคิวทั้งหมด + กำลังให้บริการ (วางคู่กันขนาดเท่ากัน)] -->
+                        <div class="summary-row initial-reveal-card">
+                            <!-- การ์ดซ้าย: จำนวนคิวทั้งหมด -->
+                            <div class="summary-card">
+                                <div class="summary-left">
+                                    <div class="summary-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                     </div>
-                                    <div class="progress-track">
-                                        <div id="customer-active-bar" class="progress-fill" style="width: 60%;"></div>
+                                    <div>
+                                        <p class="summary-label">จำนวนคิวทั้งหมด</p>
+                                        <div class="summary-count-row">
+                                            <span id="customer-total-queues" class="summary-count">4</span>
+                                            <span class="summary-unit">คิว</span>
+                                        </div>
                                     </div>
-                                    <p id="customer-active-note" class="progress-note">ลูกค้า: คุณเมย์ • เซ็ตของขวัญโบว์ชมพูพรีเมียม</p>
                                 </div>
                             </div>
 
-                            <!-- รูปอัปเดตความคืบหน้าของงาน (ฝั่งลูกค้า พร้อมรองรับ Lightbox เมื่อกดรูป) -->
-                            <div id="customer-active-work-box" class="work-progress-box hidden">
-                                <div class="work-progress-header">
-                                    <span>📸 รูปอัปเดตความคืบหน้าของงาน</span>
-                                    <span style="font-weight:400; color:var(--text-muted);">แตะรูปเพื่อขยายเต็มจอ</span>
-                                </div>
-                                <img id="customer-active-work-img" class="work-progress-img" src="" alt="รูปความคืบหน้างาน" onclick="openLightbox(this.src)" title="แตะเพื่อขยายดูภาพเต็มจอ">
-                            </div>
+                            <!-- การ์ดขวา: กำลังให้บริการ -->
+                            <div id="customer-active-card-box" class="summary-card active-service-mini soft-glow-active" onclick="openActiveQueueDetail()" title="แตะเพื่อดูรายละเอียดและรูปความคืบหน้าของคิวที่กำลังทำ">
+                                <div id="customer-sparkle-layer" class="sparkle-layer" aria-hidden="true"></div>
+                                <div id="customer-active-celebration" class="celebration-layer" aria-hidden="true"></div>
 
-                            <!-- Stepper 4 ขั้นตอน (Animated Step Tracker) -->
-                            <div class="stepper-wrap">
-                                <div class="stepper-track-line"></div>
-                                <div id="customer-stepper-line" class="stepper-fill-line" style="width: 30%;"></div>
-                                <div id="customer-stepper-nodes" class="stepper-grid">
-                                    <div class="step-item passed"><div class="step-circle">✓</div><span class="step-label">รอคิว</span></div>
-                                    <div class="step-item passed current"><div class="step-circle">✓</div><span class="step-label">กำลังทำ</span></div>
-                                    <div class="step-item"><div class="step-circle">3</div><span class="step-label">ใกล้เสร็จ</span></div>
-                                    <div class="step-item"><div class="step-circle">4</div><span class="step-label">เสร็จสิ้น</span></div>
+                                <div class="summary-left">
+                                    <div id="customer-active-badge-box" class="active-mini-badge">
+                                        <img id="customer-active-badge-icon" src="https://i.postimg.cc/4x8z03W8/IMG-0801.png" class="queue-mini-icon" alt="Queue Icon">
+                                        <strong>คิว <span id="customer-active-code">A008</span></strong>
+                                    </div>
+                                    <div class="active-mini-info">
+                                        <div class="active-mini-head">
+                                            <span class="active-mini-title">
+                                                <span id="customer-active-pulse-dot" class="pulse-dot" style="width:6px;height:6px;"></span>
+                                                กำลังให้บริการ
+                                            </span>
+                                            <span id="customer-active-percent" class="active-mini-pct">60%</span>
+                                        </div>
+                                        <div class="active-mini-status-row">
+                                            <span id="customer-active-status-text" class="active-mini-status">กำลังดำเนินการ</span>
+                                            <img id="customer-active-work-img" class="active-mini-work-thumb hidden" src="" alt="รูปงาน" onclick="event.stopPropagation(); openActiveQueueLightbox();" title="แตะเพื่อดูรูปขยาย">
+                                        </div>
+                                        <div class="mini-bar-track" style="height:5px;">
+                                            <div id="customer-active-bar" class="progress-fill" style="width: 60%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="hidden" aria-hidden="true">
+                                    <span id="customer-active-live-pill"><span id="customer-active-status-pill-text"></span></span>
+                                    <p id="customer-active-note"></p>
+                                    <div id="customer-active-work-box"></div>
+                                    <div id="customer-stepper-line"></div>
+                                    <div id="customer-stepper-nodes"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- [ส่วนที่ 5: รายการคิวทั้งหมด + ปุ่มดูรายละเอียด] -->
-                        <div class="content-card">
+                        <div class="content-card initial-reveal-card">
                             <div class="card-header-row">
                                 <div class="card-title-group">
                                     <span class="card-icon-badge">📋</span>
@@ -1836,26 +2376,37 @@
                                 <input type="text" id="customer-search-input" class="search-input" oninput="renderAll()" placeholder="ค้นหาเลขคิว เช่น A008 หรือชื่อลูกค้า...">
                             </div>
 
-                            <div id="customer-queue-list" class="queue-list">
-                                <!-- แสดงผลตั้งแต่เริ่มต้นและอัปเดตด้วย JS -->
+                            <!-- Floating Mascot Assistant -->
+                            <div id="customer-mascot-assistant" class="mascot-assistant-row" aria-live="polite">
+                                <div id="customer-mascot-bubble" class="mascot-speech-bubble">
+                                    <div id="customer-mascot-text" class="mascot-speech-text">
+                                        กำลังทำคิว <strong>A008</strong> (<strong>60%</strong>) ✨<br>แตะที่การ์ดคิวเพื่อดูรายละเอียดได้นะคะ ♡
+                                    </div>
+                                </div>
+                                <div class="mascot-figure-slot">
+                                    <img id="customer-mascot-img" class="mascot-figure-img" src="https://i.postimg.cc/4x8z03W8/IMG-0801.png" alt="KhawShop Mascot">
+                                    <div id="customer-mascot-slot-empty" class="mascot-placeholder-slot hidden" onclick="openImageConfigModal()" title="แตะเพื่อใส่รูปมาสคอต PNG พื้นหลังโปร่งใส">
+                                        <span>+ ใส่รูป<br>มาสคอต PNG</span>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div id="customer-queue-list" class="queue-list"></div>
                         </div>
 
                     </div>
                 </div>
             </section>
 
-            <!-- ===================================================
-                 ฝั่งที่ 2: หน้าแอดมิน (เรียงลำดับตรงตามแบบร่างฝั่งขวา)
-                 =================================================== -->
+            <!-- ฝั่งที่ 2: หน้าแอดมิน -->
             <section id="admin-section" class="hidden">
                 <div class="view-badge admin split-label hidden">
-                    <span>หน้าแอดมิน (มุมมองบนมือถือ)</span>
+                    <span>หน้าแอดมิน (จัดการคิวและตั้งค่ารูป)</span>
                 </div>
 
                 <div class="phone-shell admin-shell">
-                    <div class="section-stack">
-                        <!-- [ส่วนที่ 1 (แอดมิน): โลโก้ + ชื่อร้าน + ปุ่มแก้ไขรูปเว็บ & ปุ่มสลับกลับหน้าลูกค้า] -->
+                    <div class="section-stack" id="admin-stack">
+
                         <header class="shop-header">
                             <div class="shop-brand">
                                 <div class="logo-wrapper" onclick="openImageConfigModal()" title="คลิกเพื่อเปลี่ยนรูปโลโก้และแบนเนอร์">
@@ -1881,30 +2432,28 @@
                             </div>
                         </header>
 
-                        <!-- [ส่วนที่ 2 (แอดมิน): จำนวนคิวทั้งหมด + ปุ่มรีเฟรช] -->
-                        <div class="summary-card">
-                            <div class="summary-left">
-                                <div class="summary-icon">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                </div>
-                                <div>
-                                    <p class="summary-label">จำนวนคิวทั้งหมด</p>
-                                    <div class="summary-count-row">
-                                        <span id="admin-total-queues" class="summary-count">4</span>
-                                        <span class="summary-unit">คิว</span>
+                        <div class="summary-row">
+                            <div class="summary-card">
+                                <div class="summary-left">
+                                    <div class="summary-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="summary-label">จำนวนคิวทั้งหมด</p>
+                                        <div class="summary-count-row">
+                                            <span id="admin-total-queues" class="summary-count">4</span>
+                                            <span class="summary-unit">คิว</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="summary-right">
-                                <button type="button" class="btn-refresh" onclick="triggerRefresh()">
-                                    <span>↻</span> รีเฟรช
-                                </button>
-                                <p class="updated-text">อัปเดตล่าสุด <span class="last-updated-time">10:24 น.</span></p>
-                            </div>
+                            <div class="summary-empty-space" aria-hidden="true"></div>
                         </div>
 
-                        <!-- [ส่วนที่ 3 (แอดมิน): คิวที่กำลังให้บริการ + แตะเปลี่ยนขั้นตอนได้] -->
                         <div id="admin-active-card-box" class="content-card soft-glow-active">
+                            <div id="admin-sparkle-layer" class="sparkle-layer" aria-hidden="true"></div>
+                            <div id="admin-active-celebration" class="celebration-layer" aria-hidden="true"></div>
+
                             <div class="card-header-row">
                                 <h3 class="card-title">👑 คิวที่กำลังให้บริการ</h3>
                                 <span style="font-size:11px; color:var(--pink-600); font-weight:600;"><span class="pulse-dot"></span> แตะปุ่มขั้นตอนเพื่ออัปเดต</span>
@@ -1912,6 +2461,7 @@
 
                             <div class="active-queue-box">
                                 <div id="admin-active-badge-box" class="queue-number-badge admin-badge">
+                                    <small style="color:#f3e5ab;">คิวที่</small>
                                     <strong id="admin-active-code">A008</strong>
                                 </div>
                                 <div class="progress-info">
@@ -1930,7 +2480,6 @@
                                 </div>
                             </div>
 
-                            <!-- ส่วนแปะรูปอัปเดตความคืบหน้าของงาน (ฝั่งแอดมิน - ป้องกันแสดงรูปแบนเนอร์อัตโนมัติหากไม่มีรูปจริง) -->
                             <div class="work-progress-box">
                                 <div class="work-progress-header">
                                     <span>📸 รูปอัปเดตความคืบหน้าของงาน (คิวที่กำลังทำ)</span>
@@ -1939,12 +2488,12 @@
                                         <input type="file" accept="image/*" onchange="uploadActiveQueueWorkImage(event)" style="display:none;">
                                     </label>
                                 </div>
-                                <img id="admin-active-work-img" class="work-progress-img hidden" src="" alt="รูปความคืบหน้างาน" onclick="openLightbox(this.src)" title="แตะเพื่อขยายดูภาพเต็มจอ">
+                                <img id="admin-active-work-img" class="work-progress-img hidden" src="" alt="รูปความคืบหน้างาน" onclick="openActiveQueueLightbox()" title="แตะเพื่อขยายดูภาพเต็มจอ">
                                 <div id="admin-active-work-empty-hint" style="font-size:11px; color:var(--text-muted); text-align:center; padding:4px 0;" class="hidden">
                                     ยังไม่มีรูปอัปเดตความคืบหน้าสำหรับคิวนี้
                                 </div>
                                 <div style="display:flex; gap:6px; margin-top:6px;">
-                                    <input type="text" id="admin-active-work-url-input" class="form-control" placeholder="หรือวางลิงก์รูปความคืบหน้างาน (PNG/JPG/GIF)..." style="padding:6px 10px; font-size:11px;">
+                                    <input type="text" id="admin-active-work-url-input" class="form-control" placeholder="วางลิงก์รูปความคืบหน้า (หากมีหลายรูปคั่นด้วย , )..." style="padding:6px 10px; font-size:11px;">
                                     <button type="button" class="btn-refresh" onclick="saveActiveQueueWorkUrl()" style="flex-shrink:0;">บันทึกรูป</button>
                                 </div>
                             </div>
@@ -1956,7 +2505,6 @@
                             </div>
                         </div>
 
-                        <!-- [ส่วนที่ 4 (แอดมิน): จัดการคิว (2 ปุ่มใหญ่ตามแบบร่าง)] -->
                         <div class="content-card">
                             <div class="card-header-row">
                                 <h3 class="card-title">✨ จัดการคิว</h3>
@@ -1980,12 +2528,25 @@
                             </div>
                         </div>
 
-                        <!-- [ส่วนที่ 5 (แอดมิน): รายการคิวทั้งหมด + ค้นหา + ดรอปดาวน์อัปเดต] -->
                         <div class="content-card">
                             <div class="card-header-row">
                                 <h3 class="card-title">รายการคิวทั้งหมด</h3>
                             </div>
                             <input type="text" id="admin-search-input" class="search-input" oninput="renderAll()" placeholder="🔍 ค้นหาเลขคิว หรือชื่อลูกค้า...">
+
+                            <div id="admin-mascot-assistant" class="mascot-assistant-row" aria-live="polite">
+                                <div id="admin-mascot-bubble" class="mascot-speech-bubble">
+                                    <div id="admin-mascot-text" class="mascot-speech-text">
+                                        กำลังทำคิว <strong>A008</strong> (<strong>60%</strong>) ✨<br>แตะที่การ์ดคิวเพื่อดูรายละเอียดได้นะคะ ♡
+                                    </div>
+                                </div>
+                                <div class="mascot-figure-slot">
+                                    <img id="admin-mascot-img" class="mascot-figure-img" src="https://i.postimg.cc/4x8z03W8/IMG-0801.png" alt="KhawShop Mascot">
+                                    <div id="admin-mascot-slot-empty" class="mascot-placeholder-slot hidden" onclick="openImageConfigModal()" title="แตะเพื่อใส่รูปมาสคอต PNG พื้นหลังโปร่งใส">
+                                        <span>+ ใส่รูป<br>มาสคอต PNG</span>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div id="admin-queue-list" class="queue-list"></div>
                         </div>
@@ -2036,7 +2597,7 @@
                 </div>
                 <div class="form-group" style="background:var(--pink-50); padding:10px; border-radius:12px; border:1px solid var(--pink-200);">
                     <label>📸 รูปอัปเดตความคืบหน้าของงาน (แปะรูปว่างานทำถึงประมาณไหนแล้ว)</label>
-                    <input type="text" id="form-queue-progress-img" class="form-control" placeholder="วางลิงก์รูปภาพ หรืออัปโหลดไฟล์ด้านล่าง" style="margin-bottom:6px;">
+                    <input type="text" id="form-queue-progress-img" class="form-control" placeholder="วางลิงก์รูปภาพ (หากมีหลายรูปคั่นด้วย , ) หรืออัปโหลดไฟล์" style="margin-bottom:6px;">
                     <input type="file" accept="image/*" onchange="handleLocalImageUpload(event, 'form-queue-progress-img')" style="font-size:11px;">
                 </div>
                 <div class="form-group" style="display:flex; align-items:center; gap:8px;">
@@ -2080,25 +2641,37 @@
                 <div class="form-group" style="background:var(--pink-50); padding:10px; border-radius:14px; border:1px solid var(--pink-200);">
                     <label>🖼️ รูปแบนเนอร์ (1 รูป)</label>
                     <input type="text" id="cfg-banner-url-0" class="form-control" placeholder="ลิงก์รูปแบนเนอร์" style="margin-bottom:6px;">
+                    <input type="text" id="cfg-banner-cap-0" class="form-control" placeholder="คำบรรยายบนแบนเนอร์" style="margin-bottom:6px;">
                     <input type="file" accept="image/*" onchange="handleLocalImageUpload(event, 'cfg-banner-url-0')" style="font-size:11px;">
                 </div>
-                <div class="form-group" style="background:var(--gold-light); padding:10px; border-radius:14px; border:1px solid #ebd07a;">
-                    <label>✨ รูปกรอบเลขคิว (รองรับ PNG พื้นหลังโปร่งใส หรือ GIF ดุ๊กดิ๊ก - ล็อกขนาดอัตโนมัติ)</label>
-                    <input type="text" id="cfg-queue-frame-url" class="form-control" placeholder="วางลิงก์รูปกรอบ PNG/GIF" style="margin-bottom:6px;">
+                <div class="form-group" style="background:var(--pink-50); padding:10px; border-radius:14px; border:1px solid var(--pink-200);">
+                    <label>🎀 รูปไอคอนป้ายคิว PNG / GIF (แสดงด้านบนและมีเลขคิวกำกับด้านล่าง)</label>
+                    <input type="text" id="cfg-queue-icon-url" class="form-control" placeholder="วางลิงก์รูป PNG / GIF ขนาดเล็ก หรืออัปโหลดไฟล์ด้านล่าง" style="margin-bottom:6px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+                        <input type="file" accept="image/png,image/gif,image/webp,image/svg+xml,image/*" onchange="handleLocalImageUpload(event, 'cfg-queue-icon-url')" style="font-size:11px;">
+                        <button type="button" class="btn-refresh" onclick="useDefaultCuteBadgeIcon()">ใช้ไอคอนตัวอย่างมาตรฐาน</button>
+                    </div>
+                    <label style="margin-top:4px;">🖼️ กรอบพื้นหลังป้ายเลขคิว (PNG/SVG แบบใส - ถ้ามี)</label>
+                    <input type="text" id="cfg-queue-frame-url" class="form-control" placeholder="วางลิงก์กรอบรูปใส หรือเว้นว่างไว้" style="margin-bottom:6px;">
                     <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap;">
-                        <input type="file" accept="image/png,image/gif,image/*" onchange="handleLocalImageUpload(event, 'cfg-queue-frame-url')" style="font-size:11px; max-width:200px;">
-                        <button type="button" class="btn-refresh" onclick="useSampleCuteFrame()">ใช้รูปตัวอย่าง</button>
+                        <input type="file" accept="image/*" onchange="handleLocalImageUpload(event, 'cfg-queue-frame-url')" style="font-size:11px;">
+                        <button type="button" class="btn-refresh" onclick="useSampleCuteFrame()">ลองใช้กรอบใสตัวอย่าง</button>
                     </div>
                 </div>
+                <div class="form-group" style="background:var(--pink-50); padding:10px; border-radius:14px; border:1px solid var(--pink-200);">
+                    <label>🧸 รูปมาสคอตผู้ช่วย PNG พื้นหลังโปร่งใส (Floating Mascot Assistant ขนาด 60–75px)</label>
+                    <input type="text" id="cfg-mascot-url" class="form-control" placeholder="วางลิงก์รูปมาสคอต PNG พื้นหลังโปร่งใส หรือเลือกไฟล์ด้านล่าง" style="margin-bottom:6px;">
+                    <input type="file" accept="image/png,image/webp,image/gif,image/*" onchange="handleLocalImageUpload(event, 'cfg-mascot-url')" style="font-size:11px;">
+                </div>
                 <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
-                    <button type="button" class="btn-light" onclick="closeImageConfigModal()">ปิด</button>
-                    <button type="submit" class="btn-primary">บันทึกการเปลี่ยนแปลง</button>
+                    <button type="button" class="btn-light" onclick="closeImageConfigModal()">ยกเลิก</button>
+                    <button type="submit" class="btn-primary">บันทึกการตั้งค่า</button>
                 </div>
             </form>
         </div>
     </div>
 
-            <!-- MODAL 3: ป๊อปอัปดูรายละเอียดคิวฝั่งลูกค้า (Queue Detail Bottom Sheet เลื่อนขึ้นจากด้านล่าง) -->
+    <!-- MODAL 3: ป๊อปอัปดูรายละเอียดคิวฝั่งลูกค้า (แสดงตรงกลางหน้าจอ) -->
     <div id="customer-detail-modal" class="modal-backdrop bottom-sheet-backdrop" onclick="closeCustomerDetailModal()">
         <div class="modal-card bottom-sheet-card" onclick="event.stopPropagation()">
             <div class="bottom-sheet-handle"></div>
@@ -2112,9 +2685,9 @@
             </div>
 
             <div style="background:var(--pink-50); padding:12px; border-radius:16px; border:1px solid var(--pink-200); text-align:left; margin-bottom:14px;">
-                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:6px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:6px;">
                     <span>สถานะปัจจุบัน:</span>
-                    <strong id="cust-modal-status" style="color:var(--pink-600);">กำลังดำเนินการ</strong>
+                    <span id="cust-modal-status" class="status-chip">กำลังดำเนินการ</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:6px;">
                     <span>ความคืบหน้า:</span>
@@ -2125,10 +2698,15 @@
                 </div>
                 <p id="cust-modal-note" style="font-size:11px; color:var(--text-muted); margin-top:8px;"></p>
 
-                <!-- รูปความคืบหน้าของงานใน Bottom Sheet (กดขยาย Lightbox ได้) -->
                 <div id="cust-modal-work-wrap" class="hidden" style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--pink-200);">
-                    <p style="font-size:11px; font-weight:600; color:var(--pink-700); margin-bottom:5px;">📸 รูปอัปเดตความคืบหน้าของงาน (แตะรูปเพื่อขยายเต็มจอ):</p>
-                    <img id="cust-modal-work-img" src="" alt="รูปความคืบหน้างาน" onclick="openLightbox(this.src)" style="width:100%; max-height:160px; object-fit:cover; border-radius:10px; border:1px solid var(--pink-200); cursor:pointer;">
+                    <p style="font-size:11px; font-weight:600; color:var(--pink-700); margin-bottom:6px;">📸 รูปอัปเดตความคืบหน้าของงาน:</p>
+                    <div class="work-progress-thumb-row">
+                        <img id="cust-modal-work-img" class="work-progress-img" src="" alt="รูปความคืบหน้างาน" onclick="openModalQueueLightbox()">
+                        <div class="work-progress-thumb-hint" onclick="openModalQueueLightbox()" style="cursor:pointer;">
+                            <strong style="color:var(--pink-600); display:block; font-size:11.5px;">แตะที่รูปเพื่อขยายเต็มจอ</strong>
+                            <span>แสดงรูปขนาดใหญ่ตรงกลางหน้าจอ</span>
+                        </div>
+                    </div>
                 </div>
                 <div id="cust-modal-work-empty" style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:10px; padding-top:8px; border-top:1px dashed var(--pink-200);">
                     ยังไม่มีรูปอัปเดตความคืบหน้าสำหรับคิวนี้
@@ -2139,35 +2717,42 @@
         </div>
     </div>
 
-    <!-- 5. Progress Photo Lightbox: เมื่อกดรูปอัปเดตความคืบหน้าให้ขยายดูภาพเต็มจอ -->
+    <!-- Photo Lightbox -->
     <div id="lightbox-modal" class="lightbox-backdrop" onclick="closeLightbox()">
-        <div class="lightbox-content" onclick="event.stopPropagation()">
-            <button type="button" class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <div class="lightbox-content" onclick="event.stopPropagation()" id="lightbox-touch-area">
+            <button type="button" class="lightbox-close" onclick="closeLightbox()" aria-label="ปิดหน้าต่างรูปภาพ">✕</button>
+            <button type="button" id="lightbox-prev-btn" class="lightbox-nav-btn prev hidden" onclick="changeLightboxSlide(-1)" aria-label="รูปก่อนหน้า">‹</button>
             <img id="lightbox-img-el" src="" alt="ขยายรูปความคืบหน้างาน">
+            <button type="button" id="lightbox-next-btn" class="lightbox-nav-btn next hidden" onclick="changeLightboxSlide(1)" aria-label="รูปถัดไป">›</button>
+            <div id="lightbox-counter-el" class="lightbox-counter hidden">1 / 1</div>
         </div>
     </div>
 
-    <!-- Toast แจ้งเตือน -->
-    <div id="toast" class="toast-box">
-        <span>✨</span>
-        <span id="toast-message">อัปเดตข้อมูลเรียบร้อย</span>
+    <!-- Sweet Toast Notification -->
+    <div id="toast" class="toast-box" role="status" aria-live="polite">
+        <span id="toast-icon">🌸</span>
+        <span id="toast-message">อัปเดตข้อมูลล่าสุดแล้ว ♡</span>
     </div>
 
     <script>
         const STEP_LABELS = ['รอคิว', 'กำลังทำ', 'ใกล้เสร็จ', 'เสร็จสิ้น'];
         const STATUS_DISPLAY = ['รอคิว', 'กำลังดำเนินการ', 'ใกล้เสร็จแล้ว', 'เสร็จสิ้นพร้อมรับ'];
         const DEFAULT_IMG = 'https://i.postimg.cc/brmbyvBz/att-NAG7x-CA9q-XOc-CONqh-F14WE9q1PX9t-AJ8anjf0s-JZPa-U.jpg';
-        const DEFAULT_QUEUE_FRAME = 'https://i.postimg.cc/4x8z03W8/IMG-0801.png';
+        const DEFAULT_BADGE_ICON = 'https://i.postimg.cc/4x8z03W8/IMG-0801.png';
 
         let siteConfig = {
             shopName: 'KhawShop',
             shopSubtitle: 'ยินดีต้อนรับ ✿ เช็คสถานะคิวเรียลไทม์',
             logoUrl: DEFAULT_IMG,
-            queueFrameUrl: DEFAULT_QUEUE_FRAME,
+            queueIconUrl: DEFAULT_BADGE_ICON,
+            queueFrameUrl: '',
+            mascotUrl: DEFAULT_BADGE_ICON,
             banners: [
                 { url: DEFAULT_IMG, caption: '' }
             ]
         };
+
+        let lastMascotSpeechSignature = '';
 
         let queues = [
             { id: 'q1', code: 'A006', customer: 'คุณนิชา', step: 0, percent: 35, note: 'เซ็ตของขวัญผูกโบว์ชมพู พรีเมียม', progressImg: '', isActive: false },
@@ -2175,6 +2760,54 @@
             { id: 'q3', code: 'A008', customer: 'คุณเมย์', step: 1, percent: 60, note: 'ออเดอร์เซ็ตของขวัญโบว์ชมพูพรีเมียม', progressImg: DEFAULT_IMG, isActive: true },
             { id: 'q4', code: 'A009', customer: 'คุณลูกพีช', step: 0, percent: 15, note: 'สั่งทำป้ายชื่ออะคริลิคสีชมพูพาสเทล', progressImg: '', isActive: false }
         ];
+
+        const revealedQueueIdsCustomer = new Set();
+        const revealedQueueIdsAdmin = new Set();
+        let initialPageRevealDone = false;
+
+        const previousStepMap = new Map();
+        const previousPercentMap = new Map();
+        const recentlyMorphedStepSet = new Set();
+        const recentlyCompletedSet = new Set();
+
+        const expandedAccordionIds = new Set();
+        const freshUpdatedQueueIds = new Set();
+        const queueUpdatedTimeMap = new Map();
+
+        function formatCurrentTimeStr() {
+            const now = new Date();
+            return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' น.';
+        }
+
+        const initialTimeStr = formatCurrentTimeStr();
+        queues.forEach(q => {
+            previousStepMap.set(q.id, q.step);
+            previousPercentMap.set(q.id, q.percent);
+            queueUpdatedTimeMap.set(q.id, initialTimeStr);
+        });
+
+        let lightboxImages = [];
+        let lightboxIndex = 0;
+        let savedScrollY = 0;
+        let currentModalQueueId = null;
+
+        function parseProgressImages(rawStr) {
+            if (!rawStr || typeof rawStr !== 'string') return [];
+            return rawStr.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        function getStatusBreathingClass(step) {
+            if (step === 1 || step === 2) return 'status-breathing';
+            return 'status-calm';
+        }
+
+        function markQueueAsFreshlyUpdated(queueId) {
+            if (!queueId) return;
+            queueUpdatedTimeMap.set(queueId, formatCurrentTimeStr());
+            if (!expandedAccordionIds.has(queueId)) {
+                freshUpdatedQueueIds.add(queueId);
+            }
+        }
 
         function switchViewMode(mode) {
             const wrapper = document.getElementById('views-wrapper');
@@ -2202,8 +2835,10 @@
 
         function renderBanners() {
             const bannerImg = document.getElementById('banner-image-el');
-            const item = siteConfig.banners[0] || { url: DEFAULT_IMG };
-            if (bannerImg) bannerImg.src = item.url;
+            const captionEl = document.getElementById('banner-caption');
+            const item = siteConfig.banners[0] || { url: DEFAULT_IMG, caption: '' };
+            bannerImg.src = item.url;
+            captionEl.textContent = item.caption;
         }
 
         function applyQueueFrameStyle(el) {
@@ -2226,6 +2861,60 @@
             return active;
         }
 
+        function renderMascotAssistant(active) {
+            let speechHtml = '';
+            let signature = '';
+
+            if (!Array.isArray(queues) || queues.length === 0 || !active) {
+                speechHtml = `ยินดีต้อนรับสู่ <strong>${siteConfig.shopName || 'KhawShop'}</strong> นะคะ ✿<br>ขณะนี้ยังไม่มีรายการคิวในระบบค่ะ ♡`;
+                signature = `empty_${siteConfig.shopName}`;
+            } else {
+                const statusTxt = STATUS_DISPLAY[active.step] || 'กำลังดำเนินการ';
+                if (active.step === 3) {
+                    speechHtml = `คิว <strong>${active.code}</strong> เสร็จสิ้นพร้อมรับแล้วค่ะ (<strong>${active.percent}%</strong>) ♡<br>กำลังมีทั้งหมด <strong>${queues.length} คิว</strong> ในรายการนะคะ`;
+                } else {
+                    speechHtml = `ตอนนี้คิว <strong>${active.code}</strong> ${statusTxt} <strong>${active.percent}%</strong> ✨<br>แตะการ์ดคิวด้านล่างเพื่อดูรายละเอียดได้นะคะ`;
+                }
+                signature = `${active.id}_${active.code}_${active.step}_${active.percent}_${queues.length}`;
+            }
+
+            const custTextEl = document.getElementById('customer-mascot-text');
+            const adminTextEl = document.getElementById('admin-mascot-text');
+            const custBubbleEl = document.getElementById('customer-mascot-bubble');
+            const adminBubbleEl = document.getElementById('admin-mascot-bubble');
+
+            if (custTextEl) custTextEl.innerHTML = speechHtml;
+            if (adminTextEl) adminTextEl.innerHTML = speechHtml;
+
+            if (lastMascotSpeechSignature && lastMascotSpeechSignature !== signature) {
+                [custBubbleEl, adminBubbleEl].forEach(bubble => {
+                    if (!bubble) return;
+                    bubble.style.animation = 'none';
+                    void bubble.offsetWidth;
+                    bubble.style.animation = 'mascotBubbleFadeIn 0.38s cubic-bezier(0.22, 1, 0.36, 1)';
+                });
+            }
+            lastMascotSpeechSignature = signature;
+
+            const mascotUrl = (siteConfig.mascotUrl || '').trim();
+            const custImg = document.getElementById('customer-mascot-img');
+            const custEmpty = document.getElementById('customer-mascot-slot-empty');
+            const adminImg = document.getElementById('admin-mascot-img');
+            const adminEmpty = document.getElementById('admin-mascot-slot-empty');
+
+            if (mascotUrl) {
+                if (custImg) { custImg.src = mascotUrl; custImg.classList.remove('hidden'); }
+                if (custEmpty) custEmpty.classList.add('hidden');
+                if (adminImg) { adminImg.src = mascotUrl; adminImg.classList.remove('hidden'); }
+                if (adminEmpty) adminEmpty.classList.add('hidden');
+            } else {
+                if (custImg) { custImg.src = ''; custImg.classList.add('hidden'); }
+                if (custEmpty) custEmpty.classList.remove('hidden');
+                if (adminImg) { adminImg.src = ''; adminImg.classList.add('hidden'); }
+                if (adminEmpty) adminEmpty.classList.remove('hidden');
+            }
+        }
+
         function renderAll() {
             document.getElementById('customer-shop-name').textContent = siteConfig.shopName;
             document.getElementById('admin-shop-name').textContent = siteConfig.shopName;
@@ -2242,6 +2931,11 @@
             document.getElementById('admin-total-queues').textContent = queues.length;
 
             const active = getActiveQueue();
+            renderMascotAssistant(active);
+            const activeBadgeIconEl = document.getElementById('customer-active-badge-icon');
+            if (activeBadgeIconEl) {
+                activeBadgeIconEl.src = siteConfig.queueIconUrl || DEFAULT_BADGE_ICON;
+            }
             if (active) {
                 const statusTxt = STATUS_DISPLAY[active.step] || 'กำลังดำเนินการ';
                 document.getElementById('customer-active-code').textContent = active.code;
@@ -2251,29 +2945,45 @@
                 document.getElementById('customer-active-bar').style.width = active.percent + '%';
                 document.getElementById('customer-active-note').textContent = (active.customer ? 'ลูกค้า: ' + active.customer + ' • ' : '') + (active.note || '');
 
+                const livePillEl = document.getElementById('customer-active-live-pill');
+                const pulseDotEl = document.getElementById('customer-active-pulse-dot');
+                if (livePillEl) {
+                    livePillEl.classList.remove('status-breathing', 'status-calm');
+                    livePillEl.classList.add(getStatusBreathingClass(active.step));
+                }
+                if (pulseDotEl) {
+                    pulseDotEl.style.display = (active.step === 1 || active.step === 2) ? 'inline-block' : 'none';
+                }
+
                 document.getElementById('admin-active-code').textContent = active.code;
                 document.getElementById('admin-active-status-text').textContent = statusTxt;
                 document.getElementById('admin-active-percent').textContent = active.percent + '%';
                 document.getElementById('admin-active-bar').style.width = active.percent + '%';
                 document.getElementById('admin-progress-slider').value = active.percent;
 
-                // ตรวจสอบและแสดงรูปความคืบหน้างานโดยไม่ดึงแบนเนอร์มาใส่แทนอัตโนมัติหากไม่มีรูปจริง
                 const custWorkBox = document.getElementById('customer-active-work-box');
                 const custWorkImg = document.getElementById('customer-active-work-img');
                 const adminWorkImg = document.getElementById('admin-active-work-img');
                 const adminWorkEmpty = document.getElementById('admin-active-work-empty-hint');
                 const adminWorkInput = document.getElementById('admin-active-work-url-input');
 
-                if (active.progressImg && active.progressImg.trim() !== '') {
-                    custWorkBox.classList.remove('hidden');
-                    custWorkImg.src = active.progressImg;
+                const activeImgs = parseProgressImages(active.progressImg);
+                if (activeImgs.length > 0) {
+                    if (custWorkBox) custWorkBox.classList.remove('hidden');
+                    if (custWorkImg) {
+                        custWorkImg.classList.remove('hidden');
+                        custWorkImg.src = activeImgs[0];
+                    }
                     adminWorkImg.classList.remove('hidden');
-                    adminWorkImg.src = active.progressImg;
+                    adminWorkImg.src = activeImgs[0];
                     adminWorkEmpty.classList.add('hidden');
                     adminWorkInput.value = active.progressImg;
                 } else {
-                    custWorkBox.classList.add('hidden');
-                    custWorkImg.src = '';
+                    if (custWorkBox) custWorkBox.classList.add('hidden');
+                    if (custWorkImg) {
+                        custWorkImg.classList.add('hidden');
+                        custWorkImg.src = '';
+                    }
                     adminWorkImg.classList.add('hidden');
                     adminWorkImg.src = '';
                     adminWorkEmpty.classList.remove('hidden');
@@ -2303,71 +3013,437 @@
                         <button type="button" onclick="setActiveQueueStep(${idx})" class="step-item ${passed ? 'passed' : ''} ${current ? 'current' : ''}">
                             <div class="step-circle">${passed ? '✓' : idx + 1}</div>
                             <span class="step-label">${label}</span>
-                        </button>
+                        </div>
                     `;
                 }).join('');
             }
 
             const frameClass = siteConfig.queueFrameUrl ? 'has-frame' : '';
             const frameStyle = siteConfig.queueFrameUrl ? `style="background-image:url('${siteConfig.queueFrameUrl}');"` : '';
+            const badgeIconSrc = siteConfig.queueIconUrl || DEFAULT_BADGE_ICON;
 
-            // รายการคิวฝั่งลูกค้า
+            const stepChangedIds = new Set();
+            const percentTransitionList = [];
+
+            queues.forEach(q => {
+                const prevStep = previousStepMap.get(q.id);
+                if (prevStep !== undefined && prevStep !== q.step) {
+                    stepChangedIds.add(q.id);
+                }
+                const prevPct = previousPercentMap.get(q.id);
+                if (prevPct !== undefined && prevPct !== q.percent) {
+                    percentTransitionList.push({ id: q.id, from: prevPct, to: q.percent });
+                }
+                previousPercentMap.set(q.id, q.percent);
+            });
+
             const custSearch = (document.getElementById('customer-search-input')?.value || '').trim().toLowerCase();
             const custQueues = queues.filter(q =>
                 q.code.toLowerCase().includes(custSearch) ||
                 (q.customer || '').toLowerCase().includes(custSearch)
             );
 
-            document.getElementById('customer-queue-list').innerHTML = custQueues.map(q => `
-                <div class="queue-row ${q.isActive ? 'active-row soft-glow-active' : ''}" onclick="openCustomerDetailModal('${q.id}')">
-                    <div class="queue-mini-box ${frameClass}" ${frameStyle}>
-                        <strong>${q.code}</strong>
-                    </div>
-                    <div class="queue-row-mid">
-                        <div class="queue-row-top">
-                            <span class="status-chip">${STATUS_DISPLAY[q.step]}</span>
-                            <span class="customer-name-sub">${q.customer || ''} ${q.progressImg ? '📸' : ''}</span>
-                        </div>
-                        <div class="mini-bar-track">
-                            <div class="mini-bar-fill" style="width:${q.percent}%;"></div>
-                        </div>
-                    </div>
-                    <span style="color:var(--pink-400); font-weight:bold;">›</span>
-                </div>
-            `).join('');
+            let newCustIdx = 0;
+            document.getElementById('customer-queue-list').innerHTML = custQueues.map((q) => {
+                const isFirstReveal = !revealedQueueIdsCustomer.has(q.id);
+                let revealClass = '';
+                let revealStyle = '';
+                if (isFirstReveal) {
+                    revealedQueueIdsCustomer.add(q.id);
+                    revealClass = 'stagger-reveal-item';
+                    const delayMs = newCustIdx * 65;
+                    revealStyle = `style="animation-delay: ${delayMs}ms;"`;
+                    newCustIdx++;
+                }
 
-            // รายการคิวฝั่งแอดมิน
+                const isInProgress = (q.step === 1);
+                const glowClass = isInProgress ? 'in-progress-glow' : '';
+                const shimmerRingHtml = isInProgress ? `<div class="shimmer-border-ring" aria-hidden="true"></div>` : '';
+
+                const isExpanded = expandedAccordionIds.has(q.id);
+                const accordionClass = isExpanded ? 'accordion-open' : '';
+
+                const breathClass = getStatusBreathingClass(q.step);
+                const morphClass = (stepChangedIds.has(q.id) || recentlyMorphedStepSet.has(q.id)) ? 'morph-anim' : '';
+                const isDone = (q.step === 3);
+                const checkPopClass = recentlyCompletedSet.has(q.id) ? 'pop-check' : '';
+                const checkIconHtml = isDone ? `<span class="completed-check-icon ${checkPopClass}">✓</span>` : '';
+
+                const pctChangeObj = percentTransitionList.find(item => item.id === q.id);
+                const initialBarWidth = pctChangeObj ? pctChangeObj.from : q.percent;
+
+                const isFresh = freshUpdatedQueueIds.has(q.id);
+                const freshBadgeHtml = isFresh
+                    ? `<span class="fresh-update-badge" id="fresh-badge-${q.id}"><span class="fresh-update-dot"></span>NEW</span>`
+                    : '';
+
+                const tlWidths = [0, 26, 52, 76];
+                const tlFillW = tlWidths[q.step] || 0;
+                const timelineNodesHtml = STEP_LABELS.map((label, idx) => {
+                    const passed = idx < q.step || (q.step === 3 && idx <= 3);
+                    const current = idx === q.step && q.step < 3;
+                    return `
+                        <div class="mini-tl-node ${passed ? 'passed' : ''} ${current ? 'current' : ''}">
+                            <div class="mini-tl-dot">${passed ? '✓' : idx + 1}</div>
+                            <span class="mini-tl-label">${label}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                const updatedTimeStr = queueUpdatedTimeMap.get(q.id) || initialTimeStr;
+
+                return `
+                <div id="cust-row-${q.id}"
+                     class="queue-row ${q.isActive ? 'active-row' : ''} ${glowClass} ${accordionClass} ${revealClass}"
+                     ${revealStyle}
+                     role="button"
+                     tabindex="0"
+                     aria-expanded="${isExpanded ? 'true' : 'false'}"
+                     onpointerdown="handleCardPointerDown(event, this)"
+                     onpointerup="handleCardPointerUp(this)"
+                     onpointerleave="handleCardPointerUp(this)"
+                     onpointercancel="handleCardPointerUp(this)"
+                     onkeydown="handleCardKeyDown(event, '${q.id}')"
+                     onclick="handleCustomerQueueCardTap(event, '${q.id}')">
+                    ${shimmerRingHtml}
+                    <div class="pearl-sweep-layer" aria-hidden="true"></div>
+                    <div id="cust-celeb-${q.id}" class="celebration-layer" aria-hidden="true"></div>
+                    ${freshBadgeHtml}
+
+                    <div class="queue-row-main">
+                        <div class="queue-mini-box ${frameClass}" ${frameStyle}>
+                            <img src="${badgeIconSrc}" class="queue-mini-icon" alt="Queue Icon">
+                            <strong>คิว ${q.code}</strong>
+                        </div>
+                        <div class="queue-row-mid">
+                            <div class="queue-row-top">
+                                <span class="status-chip step-chip-${q.step} ${breathClass} ${morphClass}">${checkIconHtml}${STATUS_DISPLAY[q.step]}</span>
+                                <span class="customer-name-sub">${q.customer || ''} ${q.progressImg ? '📸' : ''}</span>
+                            </div>
+                            <div class="mini-bar-track">
+                                <div id="cust-bar-${q.id}" class="mini-bar-fill" style="width:${initialBarWidth}%;"></div>
+                            </div>
+                        </div>
+                        <div class="queue-row-actions">
+                            <span class="accordion-chevron" title="แตะเพื่อย่อ/ขยายรายละเอียด">›</span>
+                        </div>
+                    </div>
+
+                    <div class="queue-accordion-panel" onclick="event.stopPropagation()">
+                        <div class="queue-accordion-box">
+                            <div class="accordion-info-grid">
+                                <div class="accordion-info-item">
+                                    <span class="accordion-info-label">งานที่สั่ง:</span>
+                                    <span class="accordion-info-val" style="color:var(--pink-600);" title="${q.note || '-'}">${q.note || '-'}</span>
+                                </div>
+                                <div class="accordion-info-item">
+                                    <span class="accordion-info-label">ลูกค้า:</span>
+                                    <span class="accordion-info-val">${q.customer || '-'}</span>
+                                </div>
+                                <div class="accordion-info-item">
+                                    <span class="accordion-info-label">สถานะ:</span>
+                                    <span class="accordion-info-val">${STATUS_DISPLAY[q.step]}</span>
+                                </div>
+                                <div class="accordion-info-item">
+                                    <span class="accordion-info-label">ความคืบหน้า:</span>
+                                    <span class="accordion-info-val" style="color:var(--pink-600);">${q.percent}% (${STEP_LABELS[q.step]})</span>
+                                </div>
+                            </div>
+
+                            <div class="mini-timeline-wrap">
+                                <div class="mini-timeline-track"></div>
+                                <div class="mini-timeline-fill" style="width:${tlFillW}%;"></div>
+                                <div class="mini-timeline-nodes">
+                                    ${timelineNodesHtml}
+                                </div>
+                            </div>
+
+                            <div class="accordion-footer-row">
+                                <span class="accordion-time-text">อัปเดตล่าสุด ${updatedTimeStr}</span>
+                                <button type="button" class="accordion-popup-btn" onclick="openCustomerDetailModalFromBtn(event, '${q.id}')">
+                                    🔍 เปิดหน้าต่างรายละเอียด${q.progressImg ? ' / ดูรูป' : ''}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
             const adminSearch = (document.getElementById('admin-search-input')?.value || '').trim().toLowerCase();
             const adminQueues = queues.filter(q =>
                 q.code.toLowerCase().includes(adminSearch) ||
                 (q.customer || '').toLowerCase().includes(adminSearch)
             );
 
-            document.getElementById('admin-queue-list').innerHTML = adminQueues.map(q => `
-                <div class="queue-row ${q.isActive ? 'active-row soft-glow-active' : ''}">
-                    <div class="queue-mini-box ${frameClass}" ${frameStyle} onclick="selectAsActiveQueue('${q.id}')" title="แตะเพื่อตั้งเป็นคิวหลัก">
-                        <strong>${q.code}</strong>
-                    </div>
-                    <div class="queue-row-mid" onclick="openEditQueueModal('${q.id}')">
-                        <div class="queue-row-top">
-                            <span class="status-chip">${STATUS_DISPLAY[q.step]} (${q.percent}%)</span>
-                            <span class="customer-name-sub">${q.customer || ''} ${q.progressImg ? '📸' : ''}</span>
+            let newAdminIdx = 0;
+            document.getElementById('admin-queue-list').innerHTML = adminQueues.map((q) => {
+                const isFirstReveal = !revealedQueueIdsAdmin.has(q.id);
+                let revealClass = '';
+                let revealStyle = '';
+                if (isFirstReveal) {
+                    revealedQueueIdsAdmin.add(q.id);
+                    revealClass = 'stagger-reveal-item';
+                    const delayMs = newAdminIdx * 65;
+                    revealStyle = `style="animation-delay: ${delayMs}ms;"`;
+                    newAdminIdx++;
+                }
+
+                const isInProgress = (q.step === 1);
+                const glowClass = isInProgress ? 'in-progress-glow' : '';
+                const shimmerRingHtml = isInProgress ? `<div class="shimmer-border-ring" aria-hidden="true"></div>` : '';
+                const breathClass = getStatusBreathingClass(q.step);
+                const morphClass = (stepChangedIds.has(q.id) || recentlyMorphedStepSet.has(q.id)) ? 'morph-anim' : '';
+                const isDone = (q.step === 3);
+                const checkPopClass = recentlyCompletedSet.has(q.id) ? 'pop-check' : '';
+                const checkIconHtml = isDone ? `<span class="completed-check-icon ${checkPopClass}">✓</span>` : '';
+
+                const pctChangeObj = percentTransitionList.find(item => item.id === q.id);
+                const initialBarWidth = pctChangeObj ? pctChangeObj.from : q.percent;
+
+                return `
+                <div id="admin-row-${q.id}"
+                     class="queue-row ${q.isActive ? 'active-row' : ''} ${glowClass} ${revealClass}"
+                     ${revealStyle}
+                     onpointerdown="handleCardPointerDown(event, this)"
+                     onpointerup="handleCardPointerUp(this)"
+                     onpointerleave="handleCardPointerUp(this)"
+                     onpointercancel="handleCardPointerUp(this)">
+                    ${shimmerRingHtml}
+                    <div class="pearl-sweep-layer" aria-hidden="true"></div>
+                    <div id="admin-celeb-${q.id}" class="celebration-layer" aria-hidden="true"></div>
+                    <div class="queue-row-main">
+                        <div class="queue-mini-box ${frameClass}" ${frameStyle} onclick="selectAsActiveQueue('${q.id}')" title="แตะเพื่อตั้งเป็นคิวหลัก">
+                            <img src="${badgeIconSrc}" class="queue-mini-icon" alt="Queue Icon">
+                            <strong>${q.isActive ? '★ ' : ''}คิว ${q.code}</strong>
                         </div>
-                        <div class="mini-bar-track">
-                            <div class="mini-bar-fill" style="width:${q.percent}%;"></div>
+                        <div class="queue-row-mid" onclick="openEditQueueModal('${q.id}')">
+                            <div class="queue-row-top">
+                                <span class="status-chip step-chip-${q.step} ${breathClass} ${morphClass}">${checkIconHtml}${STATUS_DISPLAY[q.step]} (${q.percent}%)</span>
+                                <span class="customer-name-sub">${q.customer || ''} ${q.progressImg ? '📸' : ''}</span>
+                            </div>
+                            <div class="mini-bar-track">
+                                <div id="admin-bar-${q.id}" class="mini-bar-fill" style="width:${initialBarWidth}%;"></div>
+                            </div>
                         </div>
+                        <select class="admin-select" onclick="event.stopPropagation()" onchange="quickChangeStatus('${q.id}', this.value)">
+                            <option value="" selected disabled>อัปเดต ▾</option>
+                            <option value="step_0">รอคิว (20%)</option>
+                            <option value="step_1">กำลังทำ (60%)</option>
+                            <option value="step_2">ใกล้เสร็จ (85%)</option>
+                            <option value="step_3">เสร็จสิ้น (100%)</option>
+                            <option value="set_active">★ ตั้งเป็นคิวหลัก</option>
+                            <option value="edit">✎ แก้ไข / แปะรูปงาน</option>
+                        </select>
                     </div>
-                    <select class="admin-select" onchange="quickChangeStatus('${q.id}', this.value)">
-                        <option value="" selected disabled>อัปเดต ▾</option>
-                        <option value="step_0">รอคิว (20%)</option>
-                        <option value="step_1">กำลังทำ (60%)</option>
-                        <option value="step_2">ใกล้เสร็จ (85%)</option>
-                        <option value="step_3">เสร็จสิ้น (100%)</option>
-                        <option value="set_active">★ ตั้งเป็นคิวหลัก</option>
-                        <option value="edit">✎ แก้ไข / แปะรูปงาน</option>
-                    </select>
                 </div>
-            `).join('');
+                `;
+            }).join('');
+
+            if (percentTransitionList.length > 0) {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        percentTransitionList.forEach(item => {
+                            const custBar = document.getElementById(`cust-bar-${item.id}`);
+                            const adminBar = document.getElementById(`admin-bar-${item.id}`);
+                            if (custBar) custBar.style.width = `${item.to}%`;
+                            if (adminBar) adminBar.style.width = `${item.to}%`;
+                        });
+                    });
+                });
+            }
+        }
+
+        function handleCardPointerDown(event, cardEl) {
+            if (!cardEl) return;
+            if (event.target.closest('select, button, input, a')) return;
+            cardEl.classList.add('is-pressing');
+        }
+
+        function handleCardPointerUp(cardEl) {
+            if (!cardEl) return;
+            cardEl.classList.remove('is-pressing');
+        }
+
+        function triggerPearlSweep(cardEl) {
+            if (!cardEl) return;
+            cardEl.classList.remove('pearl-sweeping');
+            void cardEl.offsetWidth;
+            cardEl.classList.add('pearl-sweeping');
+            setTimeout(() => {
+                if (cardEl) cardEl.classList.remove('pearl-sweeping');
+            }, 560);
+        }
+
+        function handleCustomerQueueCardTap(event, queueId) {
+            if (event.target.closest('button, select, input, a')) return;
+
+            const cardEl = document.getElementById(`cust-row-${queueId}`);
+            triggerPearlSweep(cardEl);
+
+            if (freshUpdatedQueueIds.has(queueId)) {
+                freshUpdatedQueueIds.delete(queueId);
+                const badgeEl = document.getElementById(`fresh-badge-${queueId}`);
+                if (badgeEl) badgeEl.remove();
+            }
+
+            if (expandedAccordionIds.has(queueId)) {
+                expandedAccordionIds.delete(queueId);
+                if (cardEl) {
+                    cardEl.classList.remove('accordion-open');
+                    cardEl.setAttribute('aria-expanded', 'false');
+                }
+            } else {
+                expandedAccordionIds.add(queueId);
+                if (cardEl) {
+                    cardEl.classList.add('accordion-open');
+                    cardEl.setAttribute('aria-expanded', 'true');
+                }
+            }
+        }
+
+        function handleCardKeyDown(event, queueId) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleCustomerQueueCardTap(event, queueId);
+            }
+        }
+
+        function openCustomerDetailModalFromBtn(event, queueId) {
+            if (event) event.stopPropagation();
+            if (freshUpdatedQueueIds.has(queueId)) {
+                freshUpdatedQueueIds.delete(queueId);
+                const badgeEl = document.getElementById(`fresh-badge-${queueId}`);
+                if (badgeEl) badgeEl.remove();
+            }
+            openCustomerDetailModal(queueId);
+        }
+
+        function openActiveQueueDetail() {
+            const active = getActiveQueue();
+            if (active) openCustomerDetailModal(active.id);
+        }
+
+        function runInitialCardReveal() {
+            if (initialPageRevealDone) return;
+            const cards = document.querySelectorAll('.initial-reveal-card');
+            cards.forEach((card, index) => {
+                card.classList.add('stagger-reveal-item');
+                card.style.animationDelay = `${index * 65}ms`;
+                setTimeout(() => {
+                    card.classList.remove('stagger-reveal-item');
+                    card.style.animationDelay = '';
+                }, 450 + (index * 65));
+            });
+            initialPageRevealDone = true;
+        }
+
+        let sparkleTimerId = null;
+        const SPARKLE_POSITIONS = [
+            { top: '8px', left: '14%' },
+            { top: '10px', right: '22%' },
+            { bottom: '10px', left: '18%' },
+            { bottom: '12px', right: '14%' },
+            { top: '46%', left: '6px' },
+            { top: '42%', right: '7px' }
+        ];
+        const SPARKLE_COLORS = ['#ff9abb', '#d4af37', '#fff0f5'];
+
+        function createSparkleBatch(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const active = getActiveQueue();
+            if (!active || active.step === 3) return;
+
+            container.innerHTML = '';
+            const count = 2 + Math.floor(Math.random() * 2);
+            const pickedIndices = [];
+
+            for (let i = 0; i < count; i++) {
+                let idx = Math.floor(Math.random() * SPARKLE_POSITIONS.length);
+                if (pickedIndices.includes(idx)) idx = (idx + 1) % SPARKLE_POSITIONS.length;
+                pickedIndices.push(idx);
+
+                const pos = SPARKLE_POSITIONS[idx];
+                const color = SPARKLE_COLORS[i % SPARKLE_COLORS.length];
+                const starEl = document.createElement('span');
+                starEl.className = 'soft-sparkle-star';
+                Object.assign(starEl.style, pos);
+                starEl.style.animationDelay = `${i * 260}ms`;
+                starEl.innerHTML = `
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="${color}">
+                        <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+                    </svg>
+                `;
+                container.appendChild(starEl);
+            }
+        }
+
+        function startSoftSparkleLoop() {
+            if (sparkleTimerId) clearInterval(sparkleTimerId);
+            setTimeout(() => {
+                createSparkleBatch('customer-sparkle-layer');
+                createSparkleBatch('admin-sparkle-layer');
+            }, 1400);
+
+            sparkleTimerId = setInterval(() => {
+                if (document.hidden) return;
+                createSparkleBatch('customer-sparkle-layer');
+                createSparkleBatch('admin-sparkle-layer');
+            }, 6800);
+        }
+
+        function checkAndTriggerCelebration(queueId, newStep) {
+            const prevStep = previousStepMap.get(queueId);
+            previousStepMap.set(queueId, newStep);
+
+            if (prevStep !== undefined && prevStep !== newStep) {
+                recentlyMorphedStepSet.add(queueId);
+                setTimeout(() => recentlyMorphedStepSet.delete(queueId), 350);
+            }
+
+            if (prevStep !== undefined && prevStep < 3 && newStep === 3) {
+                recentlyCompletedSet.add(queueId);
+                setTimeout(() => recentlyCompletedSet.delete(queueId), 1100);
+
+                requestAnimationFrame(() => {
+                    const active = getActiveQueue();
+                    if (active && active.id === queueId) {
+                        spawnCelebrationParticles('customer-active-celebration');
+                        spawnCelebrationParticles('admin-active-celebration');
+                    }
+                    spawnCelebrationParticles(`cust-celeb-${queueId}`);
+                    spawnCelebrationParticles(`admin-celeb-${queueId}`);
+                });
+                return true;
+            }
+            return false;
+        }
+
+        function spawnCelebrationParticles(layerId) {
+            const layer = document.getElementById(layerId);
+            if (!layer) return;
+            layer.innerHTML = '';
+
+            const symbols = ['♡', '✦', '♥', '✦', '♡'];
+            const colors = ['#ff85ad', '#d4af37', '#f43676', '#e5c158', '#ff9abb'];
+            const total = 5;
+
+            for (let i = 0; i < total; i++) {
+                const el = document.createElement('span');
+                el.className = 'celebration-particle';
+                el.textContent = symbols[i % symbols.length];
+                el.style.left = `${18 + (i * 15)}%`;
+                el.style.color = colors[i % colors.length];
+                el.style.fontSize = `${11 + (i % 2) * 2}px`;
+                el.style.setProperty('--drift-x', `${(i % 2 === 0 ? 1 : -1) * (5 + i * 2)}px`);
+                el.style.animationDelay = `${i * 45}ms`;
+                layer.appendChild(el);
+            }
+
+            setTimeout(() => {
+                if (layer) layer.innerHTML = '';
+            }, 1100);
         }
 
         function uploadActiveQueueWorkImage(event) {
@@ -2376,46 +3452,71 @@
             const active = getActiveQueue();
             if (!active) return;
             active.progressImg = URL.createObjectURL(file);
+            markQueueAsFreshlyUpdated(active.id);
             updateTimestamp();
             renderAll();
-            showToast(`อัปเดตรูปความคืบหน้าของคิว ${active.code} แล้ว`);
+            showToast('มีความคืบหน้าใหม่แล้ว ✨');
         }
 
         function saveActiveQueueWorkUrl() {
             const active = getActiveQueue();
             if (!active) return;
             const val = document.getElementById('admin-active-work-url-input').value.trim();
-            active.progressImg = val;
+            if (active.progressImg !== val) {
+                active.progressImg = val;
+                markQueueAsFreshlyUpdated(active.id);
+            }
             updateTimestamp();
             renderAll();
-            showToast(val ? `บันทึกรูปความคืบหน้าคิว ${active.code} แล้ว` : `ลบรูปความคืบหน้าคิว ${active.code} แล้ว`);
-        }
-
-        function openActiveQueueDetail() {
-            const active = getActiveQueue();
-            if (active) openCustomerDetailModal(active.id);
+            showToast(val ? 'มีความคืบหน้าใหม่แล้ว ✨' : 'อัปเดตข้อมูลล่าสุดแล้ว ♡');
         }
 
         function setActiveQueueStep(stepIdx) {
             const active = getActiveQueue();
             if (!active) return;
+            const prevStep = active.step;
+            const targetPct = [25, 60, 85, 100][stepIdx];
+            if (prevStep === stepIdx && active.percent === targetPct) return;
+
             active.step = stepIdx;
-            active.percent = [25, 60, 85, 100][stepIdx];
+            active.percent = targetPct;
+            markQueueAsFreshlyUpdated(active.id);
+            const justCompleted = checkAndTriggerCelebration(active.id, stepIdx);
             updateTimestamp();
             renderAll();
-            showToast(`อัปเดตคิว ${active.code} เป็น "${STEP_LABELS[stepIdx]}"`);
+
+            if (justCompleted || stepIdx === 3) {
+                showToast('คิวนี้เสร็จเรียบร้อยแล้ว ♡');
+            } else {
+                showToast('มีความคืบหน้าใหม่แล้ว ✨');
+            }
         }
 
         function updateActiveQueuePercent(val) {
             const active = getActiveQueue();
             if (!active) return;
-            active.percent = parseInt(val, 10);
-            if (active.percent >= 100) active.step = 3;
-            else if (active.percent >= 80) active.step = 2;
-            else if (active.percent >= 40) active.step = 1;
-            else active.step = 0;
+            const newPct = parseInt(val, 10);
+            if (active.percent === newPct) return;
+
+            active.percent = newPct;
+            let newStep = 0;
+            if (active.percent >= 100) newStep = 3;
+            else if (active.percent >= 80) newStep = 2;
+            else if (active.percent >= 40) newStep = 1;
+
+            const stepChanged = active.step !== newStep;
+            active.step = newStep;
+            markQueueAsFreshlyUpdated(active.id);
+            const justCompleted = checkAndTriggerCelebration(active.id, newStep);
+
             updateTimestamp();
             renderAll();
+
+            if (justCompleted) {
+                showToast('คิวนี้เสร็จเรียบร้อยแล้ว ♡');
+            } else if (stepChanged) {
+                showToast('มีความคืบหน้าใหม่แล้ว ✨');
+            }
         }
 
         function advanceActiveQueueStep() {
@@ -2428,22 +3529,32 @@
                 if (nextQ) {
                     queues.forEach(q => q.isActive = false);
                     nextQ.isActive = true;
+                    const oldStep = nextQ.step;
                     nextQ.step = 1;
                     nextQ.percent = 60;
+                    markQueueAsFreshlyUpdated(nextQ.id);
+                    if (oldStep !== 1) {
+                        recentlyMorphedStepSet.add(nextQ.id);
+                        setTimeout(() => recentlyMorphedStepSet.delete(nextQ.id), 350);
+                    }
+                    previousStepMap.set(nextQ.id, 1);
                     updateTimestamp();
                     renderAll();
-                    showToast(`เรียกคิวถัดไป ${nextQ.code} เข้าสู่บริการแล้ว`);
+                    showToast('มีความคืบหน้าใหม่แล้ว ✨');
                 } else {
-                    showToast(`คิวทั้งหมดเสร็จสิ้นเรียบร้อยแล้วค่ะ`);
+                    showToast('คิวนี้เสร็จเรียบร้อยแล้ว ♡');
                 }
             }
         }
 
         function selectAsActiveQueue(id) {
+            const currentActive = getActiveQueue();
+            if (currentActive && currentActive.id === id) return;
             queues.forEach(q => q.isActive = (q.id === id));
+            markQueueAsFreshlyUpdated(id);
             updateTimestamp();
             renderAll();
-            showToast('เปลี่ยนคิวที่กำลังให้บริการหลักแล้ว');
+            showToast('มีความคืบหน้าใหม่แล้ว ✨');
         }
 
         function quickChangeStatus(id, action) {
@@ -2460,11 +3571,20 @@
             }
             if (action.startsWith('step_')) {
                 const st = parseInt(action.replace('step_', ''), 10);
-                q.step = st;
-                q.percent = [20, 60, 85, 100][st];
+                const newPct = [20, 60, 85, 100][st];
+                if (q.step !== st || q.percent !== newPct) {
+                    q.step = st;
+                    q.percent = newPct;
+                    markQueueAsFreshlyUpdated(q.id);
+                }
+                const justCompleted = checkAndTriggerCelebration(q.id, st);
                 updateTimestamp();
                 renderAll();
-                showToast(`อัปเดตคิว ${q.code} เรียบร้อย`);
+                if (justCompleted || st === 3) {
+                    showToast('คิวนี้เสร็จเรียบร้อยแล้ว ♡');
+                } else {
+                    showToast('มีความคืบหน้าใหม่แล้ว ✨');
+                }
             }
         }
 
@@ -2524,9 +3644,19 @@
 
             if (isActive) queues.forEach(q => q.isActive = false);
 
+            let justCompleted = false;
             if (id) {
                 const target = queues.find(q => q.id === id);
                 if (target) {
+                    const hasChanged =
+                        target.code !== code ||
+                        target.customer !== customer ||
+                        target.note !== note ||
+                        target.step !== step ||
+                        target.percent !== percent ||
+                        target.progressImg !== progressImg ||
+                        (isActive && !target.isActive);
+
                     target.code = code;
                     target.customer = customer;
                     target.note = note;
@@ -2534,25 +3664,43 @@
                     target.percent = percent;
                     target.progressImg = progressImg;
                     target.isActive = isActive || target.isActive;
+
+                    if (hasChanged) {
+                        markQueueAsFreshlyUpdated(target.id);
+                    }
+                    justCompleted = checkAndTriggerCelebration(target.id, step);
                 }
-                showToast(`แก้ไขคิว ${code} เรียบร้อย`);
             } else {
-                queues.push({ id: 'q_' + Date.now(), code, customer, note, step, percent, progressImg, isActive });
-                showToast(`เพิ่มคิว ${code} เรียบร้อย`);
+                const newId = 'q_' + Date.now();
+                queues.push({ id: newId, code, customer, note, step, percent, progressImg, isActive });
+                previousStepMap.set(newId, step);
+                previousPercentMap.set(newId, percent);
+                markQueueAsFreshlyUpdated(newId);
             }
 
             closeQueueModal();
             updateTimestamp();
             renderAll();
+
+            if (justCompleted || step === 3) {
+                showToast('คิวนี้เสร็จเรียบร้อยแล้ว ♡');
+            } else {
+                showToast('มีความคืบหน้าใหม่แล้ว ✨');
+            }
         }
 
         function deleteCurrentQueue() {
             const id = document.getElementById('form-queue-id').value;
             queues = queues.filter(q => q.id !== id);
+            previousStepMap.delete(id);
+            previousPercentMap.delete(id);
+            expandedAccordionIds.delete(id);
+            freshUpdatedQueueIds.delete(id);
+            queueUpdatedTimeMap.delete(id);
             closeQueueModal();
             updateTimestamp();
             renderAll();
-            showToast('ลบรายการคิวเรียบร้อยแล้ว');
+            showToast('อัปเดตข้อมูลล่าสุดแล้ว ♡');
         }
 
         function openImageConfigModal() {
@@ -2560,7 +3708,13 @@
             document.getElementById('cfg-shop-subtitle').value = siteConfig.shopSubtitle;
             document.getElementById('cfg-logo-url').value = siteConfig.logoUrl;
             document.getElementById('cfg-banner-url-0').value = siteConfig.banners[0]?.url || DEFAULT_IMG;
-            document.getElementById('cfg-queue-frame-url').value = siteConfig.queueFrameUrl || '';
+            document.getElementById('cfg-banner-cap-0').value = siteConfig.banners[0]?.caption || '';
+            const iconInput = document.getElementById('cfg-queue-icon-url');
+            if (iconInput) iconInput.value = siteConfig.queueIconUrl || '';
+            const frameInput = document.getElementById('cfg-queue-frame-url');
+            if (frameInput) frameInput.value = siteConfig.queueFrameUrl || '';
+            const mascotInput = document.getElementById('cfg-mascot-url');
+            if (mascotInput) mascotInput.value = siteConfig.mascotUrl || '';
 
             document.getElementById('image-config-modal').classList.add('open');
         }
@@ -2569,16 +3723,32 @@
             document.getElementById('image-config-modal').classList.remove('open');
         }
 
+        function useDefaultCuteBadgeIcon() {
+            const iconInput = document.getElementById('cfg-queue-icon-url');
+            if (iconInput) iconInput.value = DEFAULT_BADGE_ICON;
+            showToast('ใช้รูปป้ายคิวตัวอย่างมาตรฐานแล้ว กดบันทึกได้เลยค่ะ ♡');
+        }
+
         function useSampleCuteFrame() {
-            document.getElementById('cfg-queue-frame-url').value = DEFAULT_QUEUE_FRAME;
-            showToast('ใส่รูปกรอบตัวอย่างแล้ว กดบันทึกเพื่อใช้งาน');
+            const svgFrame = `data:image/svg+xml;utf8,` + encodeURIComponent(`
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110">
+                    <rect x="8" y="10" width="144" height="90" rx="24" fill="#fff0f6" fill-opacity="0.88" stroke="#f43676" stroke-width="4" stroke-dasharray="8 5"/>
+                    <circle cx="20" cy="20" r="7" fill="#ff9abb"/>
+                    <circle cx="140" cy="20" r="7" fill="#ff9abb"/>
+                    <circle cx="20" cy="90" r="7" fill="#ff9abb"/>
+                    <circle cx="140" cy="90" r="7" fill="#ff9abb"/>
+                </svg>
+            `);
+            const frameInput = document.getElementById('cfg-queue-frame-url');
+            if (frameInput) frameInput.value = svgFrame;
+            showToast('ใส่กรอบใสตัวอย่างแล้ว กดบันทึกได้เลยค่ะ ♡');
         }
 
         function handleLocalImageUpload(event, inputId) {
             const file = event.target.files[0];
             if (!file) return;
             document.getElementById(inputId).value = URL.createObjectURL(file);
-            showToast('อัปโหลดรูปภาพแล้ว กดบันทึกเพื่อใช้งาน');
+            showToast('อัปโหลดรูปภาพเรียบร้อยแล้ว ♡');
         }
 
         function saveSiteConfig(e) {
@@ -2586,29 +3756,39 @@
             siteConfig.shopName = document.getElementById('cfg-shop-name').value.trim() || 'KhawShop';
             siteConfig.shopSubtitle = document.getElementById('cfg-shop-subtitle').value.trim();
             siteConfig.logoUrl = document.getElementById('cfg-logo-url').value.trim() || DEFAULT_IMG;
-            siteConfig.queueFrameUrl = document.getElementById('cfg-queue-frame-url').value.trim();
+            const iconInput = document.getElementById('cfg-queue-icon-url');
+            siteConfig.queueIconUrl = iconInput && iconInput.value.trim() ? iconInput.value.trim() : DEFAULT_BADGE_ICON;
+            const frameInput = document.getElementById('cfg-queue-frame-url');
+            siteConfig.queueFrameUrl = frameInput ? frameInput.value.trim() : '';
+            const mascotInput = document.getElementById('cfg-mascot-url');
+            siteConfig.mascotUrl = mascotInput ? mascotInput.value.trim() : '';
             siteConfig.banners = [{
                 url: document.getElementById('cfg-banner-url-0').value.trim() || DEFAULT_IMG,
-                caption: ''
+                caption: document.getElementById('cfg-banner-cap-0').value.trim()
             }];
-            const splashLogo = document.getElementById('splash-logo-img');
-            const splashTitle = document.getElementById('splash-shop-title');
-            const splashWelcome = document.getElementById('splash-welcome-text');
-            if (splashLogo) splashLogo.src = siteConfig.logoUrl;
-            if (splashTitle) splashTitle.textContent = siteConfig.shopName;
-            if (splashWelcome) splashWelcome.textContent = siteConfig.shopSubtitle;
-
             closeImageConfigModal();
             renderAll();
-            showToast('อัปเดตข้อมูลและรูปภาพเว็บไซต์เรียบร้อย');
+            showToast('อัปเดตข้อมูลล่าสุดแล้ว ♡');
         }
 
         function openCustomerDetailModal(id) {
             const q = queues.find(item => item.id === id);
             if (!q) return;
+            currentModalQueueId = q.id;
+
+            if (freshUpdatedQueueIds.has(q.id)) {
+                freshUpdatedQueueIds.delete(q.id);
+                const badgeEl = document.getElementById(`fresh-badge-${q.id}`);
+                if (badgeEl) badgeEl.remove();
+            }
+
             document.getElementById('cust-modal-code').textContent = q.code;
             document.getElementById('cust-modal-customer').textContent = 'ลูกค้า: ' + (q.customer || 'ลูกค้า KhawShop');
-            document.getElementById('cust-modal-status').textContent = STATUS_DISPLAY[q.step];
+
+            const statusEl = document.getElementById('cust-modal-status');
+            statusEl.textContent = STATUS_DISPLAY[q.step];
+            statusEl.className = `status-chip step-chip-${q.step} ${getStatusBreathingClass(q.step)}`;
+
             document.getElementById('cust-modal-percent').textContent = q.percent + '%';
             document.getElementById('cust-modal-bar').style.width = q.percent + '%';
             document.getElementById('cust-modal-note').textContent = q.note || '';
@@ -2616,10 +3796,11 @@
             const workWrap = document.getElementById('cust-modal-work-wrap');
             const workEmpty = document.getElementById('cust-modal-work-empty');
             const workImg = document.getElementById('cust-modal-work-img');
-            if (q.progressImg && q.progressImg.trim() !== '') {
+            const imgs = parseProgressImages(q.progressImg);
+            if (imgs.length > 0) {
                 workWrap.classList.remove('hidden');
                 workEmpty.classList.add('hidden');
-                workImg.src = q.progressImg;
+                workImg.src = imgs[0];
             } else {
                 workWrap.classList.add('hidden');
                 workEmpty.classList.remove('hidden');
@@ -2633,140 +3814,265 @@
             document.getElementById('customer-detail-modal').classList.remove('open');
         }
 
-        // ฟังก์ชันเปิด-ปิด Lightbox สำหรับขยายดูภาพความคืบหน้าเต็มจอ
-        function openLightbox(imgSrc) {
-            if (!imgSrc) return;
-            document.getElementById('lightbox-img-el').src = imgSrc;
+        function openActiveQueueLightbox() {
+            const active = getActiveQueue();
+            if (!active || !active.progressImg) return;
+            openLightbox(active.progressImg, 0);
+        }
+
+        function openModalQueueLightbox() {
+            const q = queues.find(item => item.id === currentModalQueueId);
+            if (!q || !q.progressImg) return;
+            openLightbox(q.progressImg, 0);
+        }
+
+        function openLightbox(imgSourceOrList, startIndex = 0) {
+            const list = Array.isArray(imgSourceOrList)
+                ? imgSourceOrList
+                : parseProgressImages(imgSourceOrList);
+            if (list.length === 0) return;
+
+            savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+            lightboxImages = list;
+            lightboxIndex = Math.max(0, Math.min(startIndex, list.length - 1));
+
+            updateLightboxSlideUI();
             document.getElementById('lightbox-modal').classList.add('open');
         }
 
-        function closeLightbox() {
-            document.getElementById('lightbox-modal').classList.remove('open');
+        function updateLightboxSlideUI() {
+            const imgEl = document.getElementById('lightbox-img-el');
+            const prevBtn = document.getElementById('lightbox-prev-btn');
+            const nextBtn = document.getElementById('lightbox-next-btn');
+            const counterEl = document.getElementById('lightbox-counter-el');
+
+            imgEl.src = lightboxImages[lightboxIndex] || '';
+
+            if (lightboxImages.length > 1) {
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+                counterEl.classList.remove('hidden');
+                counterEl.textContent = `${lightboxIndex + 1} / ${lightboxImages.length}`;
+            } else {
+                prevBtn.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+                counterEl.classList.add('hidden');
+            }
         }
+
+        function changeLightboxSlide(delta) {
+            if (lightboxImages.length <= 1) return;
+            lightboxIndex = (lightboxIndex + delta + lightboxImages.length) % lightboxImages.length;
+            updateLightboxSlideUI();
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            if (!modal.classList.contains('open')) return;
+            modal.classList.remove('open');
+            window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+        }
+
+        (function setupLightboxTouch() {
+            const area = document.getElementById('lightbox-touch-area');
+            if (!area) return;
+            let startX = 0;
+            area.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) startX = e.touches[0].clientX;
+            }, { passive: true });
+            area.addEventListener('touchend', (e) => {
+                if (lightboxImages.length <= 1) return;
+                const endX = e.changedTouches[0].clientX;
+                const diff = endX - startX;
+                if (Math.abs(diff) > 40) {
+                    changeLightboxSlide(diff < 0 ? 1 : -1);
+                }
+            }, { passive: true });
+        })();
 
         function toggleCustomerSearch() {
             document.getElementById('customer-search-box').classList.toggle('hidden');
         }
 
         function triggerRefresh() {
-            updateTimestamp();
-            renderAll();
-            showToast('รีเฟรชข้อมูลคิวล่าสุดแล้ว');
+            try {
+                if (!Array.isArray(queues)) {
+                    throw new Error('Queue data unavailable');
+                }
+                updateTimestamp();
+                renderAll();
+                showToast('อัปเดตข้อมูลล่าสุดแล้ว ♡');
+            } catch (err) {
+                showToast('ยังโหลดข้อมูลไม่ได้ ลองใหม่อีกครั้งนะคะ', 'error');
+            }
         }
 
         function updateTimestamp() {
-            const now = new Date();
-            const t = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' น.';
+            const t = formatCurrentTimeStr();
             document.querySelectorAll('.last-updated-time').forEach(el => el.textContent = t);
         }
 
-        let toastTimeout = null;
-        function showToast(msg) {
-            const el = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = msg;
-            el.classList.add('show');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => el.classList.remove('show'), 2500);
+        const toastQueue = [];
+        let isToastShowing = false;
+        let lastToastMessage = '';
+        let lastToastTime = 0;
+
+        function showToast(msg, type = 'normal') {
+            if (!msg) return;
+            const now = Date.now();
+            if (msg === lastToastMessage && (now - lastToastTime) < 1200) {
+                return;
+            }
+            lastToastMessage = msg;
+            lastToastTime = now;
+
+            if (toastQueue.length >= 3) {
+                toastQueue.shift();
+            }
+            toastQueue.push({ msg, type });
+            processToastQueue();
         }
 
-        // ===================================================
-        // ระบบจัดการ SPLASH SCREEN อัตโนมัติ (แสดงครั้งเดียวตอนเปิด/รีเฟรชเว็บ)
-        // ===================================================
-        let splashHasFinished = false;
+        function processToastQueue() {
+            if (isToastShowing || toastQueue.length === 0) return;
+            isToastShowing = true;
+
+            const item = toastQueue.shift();
+            const el = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+
+            iconEl.textContent = item.type === 'error' ? '🌷' : '🌸';
+            msgEl.textContent = item.msg;
+            el.classList.add('show');
+
+            setTimeout(() => {
+                el.classList.remove('show');
+                setTimeout(() => {
+                    isToastShowing = false;
+                    processToastQueue();
+                }, 300);
+            }, 2400);
+        }
+
+        window.addEventListener('pagehide', () => {
+            if (sparkleTimerId) clearInterval(sparkleTimerId);
+        });
+
+        /* ==============================================================
+           ระบบควบคุม Splash Screen (เล่นเฉพาะตอนเปิด/รีเฟรชเว็บครั้งแรกเท่านั้น)
+           ============================================================== */
+        let splashCompletedOnce = false;
         const splashStartTimestamp = performance.now();
 
-        function preloadImageSafe(url, timeoutMs = 1800) {
-            return new Promise((resolve) => {
-                if (!url) {
-                    resolve();
-                    return;
-                }
-                let settled = false;
-                const done = () => {
-                    if (!settled) {
-                        settled = true;
-                        resolve();
-                    }
-                };
-                const timer = setTimeout(done, timeoutMs);
-                const img = new Image();
-                img.onload = () => { clearTimeout(timer); done(); };
-                img.onerror = () => { clearTimeout(timer); done(); };
-                img.src = url;
-            });
+        function syncSplashBrandAssets() {
+            const logoEl = document.getElementById('splash-logo-img');
+            const mascotEl = document.getElementById('splash-mascot-img');
+            const titleEl = document.getElementById('splash-shop-title');
+            const msgEl = document.getElementById('splash-welcome-msg');
+
+            if (logoEl && siteConfig.logoUrl) logoEl.src = siteConfig.logoUrl;
+            if (mascotEl && siteConfig.mascotUrl) mascotEl.src = siteConfig.mascotUrl;
+            if (titleEl && siteConfig.shopName) titleEl.textContent = siteConfig.shopName;
+            if (msgEl && siteConfig.shopSubtitle) msgEl.textContent = siteConfig.shopSubtitle;
         }
 
-        async function runSplashAndInitApp() {
-            if (splashHasFinished) return;
+        function dismissSplashWithCloudDissolve() {
+            if (splashCompletedOnce) return;
+            splashCompletedOnce = true;
 
-            const splashEl = document.getElementById('khawshop-splash');
-            const statusLabel = document.getElementById('splash-status-label');
-            const errorBox = document.getElementById('splash-error-container');
-            const loaderHearts = document.getElementById('splash-loader-hearts');
+            const splashEl = document.getElementById('khaw-splash-screen');
+            document.body.classList.remove('splash-lock');
 
-            if (errorBox) errorBox.classList.add('hidden');
-            if (loaderHearts) loaderHearts.classList.remove('hidden');
-            if (statusLabel) statusLabel.textContent = 'กำลังเตรียมข้อมูลคิวล่าสุด...';
+            if (!splashEl) {
+                runInitialCardReveal();
+                startSoftSparkleLoop();
+                return;
+            }
 
-            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const minDisplayDuration = prefersReducedMotion ? 250 : 1350; // 1.2 - 1.5 วินาทีสำหรับผู้ใช้ปกติ
+            const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReduced) {
+                splashEl.remove();
+                runInitialCardReveal();
+                startSoftSparkleLoop();
+                return;
+            }
 
+            splashEl.classList.add('cloud-dissolving');
+            runInitialCardReveal();
+            startSoftSparkleLoop();
+
+            setTimeout(() => {
+                if (splashEl && splashEl.parentNode) {
+                    splashEl.remove();
+                }
+            }, 600);
+        }
+
+        function showSplashErrorState() {
+            const loaderEl = document.getElementById('splash-loader-hearts');
+            const statusEl = document.getElementById('splash-status-sub');
+            const errArea = document.getElementById('splash-error-area');
+
+            if (loaderEl) loaderEl.classList.add('hidden');
+            if (statusEl) statusEl.classList.add('hidden');
+            if (errArea) errArea.classList.remove('hidden');
+        }
+
+        function retrySplashBoot() {
+            const loaderEl = document.getElementById('splash-loader-hearts');
+            const statusEl = document.getElementById('splash-status-sub');
+            const errArea = document.getElementById('splash-error-area');
+
+            if (errArea) errArea.classList.add('hidden');
+            if (loaderEl) loaderEl.classList.remove('hidden');
+            if (statusEl) {
+                statusEl.classList.remove('hidden');
+                statusEl.textContent = 'กำลังเตรียมข้อมูลคิวล่าสุด...';
+            }
+            bootApplicationWithSplash(true);
+        }
+
+        function bootApplicationWithSplash(isRetry = false) {
             try {
-                // เตรียมข้อมูลและเรนเดอร์หน้าเว็บจริงไว้ด้านหลัง
+                if (!Array.isArray(queues)) {
+                    throw new Error('Queue data is not ready');
+                }
+
+                syncSplashBrandAssets();
                 updateTimestamp();
                 renderAll();
 
-                // รอโหลดภาพสำคัญแบบไม่บล็อกหากรูปเสีย/โหลดช้า
-                await Promise.all([
-                    preloadImageSafe(siteConfig.logoUrl, 1400),
-                    preloadImageSafe(siteConfig.queueFrameUrl, 1400)
-                ]);
-
+                const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const minDisplayMs = prefersReduced ? 120 : (isRetry ? 650 : 1350);
                 const elapsed = performance.now() - splashStartTimestamp;
-                const remainingWait = Math.max(0, minDisplayDuration - elapsed);
+                const remainingMs = Math.max(0, minDisplayMs - elapsed);
 
-                await new Promise(resolve => setTimeout(resolve, remainingWait));
+                if (remainingMs > 300) {
+                    const statusEl = document.getElementById('splash-status-sub');
+                    if (statusEl) statusEl.textContent = 'พร้อมเข้าสู่หน้าระบบคิวแล้วค่ะ ♡';
+                }
 
-                dismissSplashScreen(prefersReducedMotion);
+                setTimeout(() => {
+                    dismissSplashWithCloudDissolve();
+                }, remainingMs);
             } catch (err) {
-                console.error('Splash initialization error:', err);
-                if (loaderHearts) loaderHearts.classList.add('hidden');
-                if (statusLabel) statusLabel.textContent = 'เกิดข้อผิดพลาดในการโหลดข้อมูล';
-                if (errorBox) errorBox.classList.remove('hidden');
+                showSplashErrorState();
             }
         }
 
-        function dismissSplashScreen(prefersReducedMotion) {
-            if (splashHasFinished) return;
-            splashHasFinished = true;
-
-            const splashEl = document.getElementById('khawshop-splash');
-            if (!splashEl) {
-                document.body.classList.remove('splash-lock');
-                return;
+        // Safety fallback: ป้องกันหน้าโหลดค้างหากรูปภาพภายนอกโหลดช้าผิดปกติ
+        setTimeout(() => {
+            if (!splashCompletedOnce) {
+                const errArea = document.getElementById('splash-error-area');
+                const isShowingError = errArea && !errArea.classList.contains('hidden');
+                if (!isShowingError) {
+                    dismissSplashWithCloudDissolve();
+                }
             }
+        }, 3200);
 
-            if (prefersReducedMotion) {
-                splashEl.classList.add('hidden');
-                document.body.classList.remove('splash-lock');
-                return;
-            }
-
-            splashEl.classList.add('cloud-dissolve');
-            document.body.classList.remove('splash-lock');
-
-            setTimeout(() => {
-                if (splashEl) splashEl.classList.add('hidden');
-            }, 780);
-        }
-
-        function retrySplashInitialization() {
-            splashHasFinished = false;
-            runSplashAndInitApp();
-        }
-
-        // เริ่มต้นทำงานทันทีโดยไม่ทำให้หน้าโหลดค้าง
-        runSplashAndInitApp();
+        bootApplicationWithSplash(false);
     </script>
 </body>
 </html>
